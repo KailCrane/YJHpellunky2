@@ -22,7 +22,9 @@ namespace ya
 		mState(Fall),
 		curr_life(3),
 		isInterctWeapon(false),
-		isHas_front_equip(false)
+		isHas_front_equip(false),
+		isCtrlAble(true),
+		isInivisible(false)
 	{
 	}
 
@@ -49,7 +51,7 @@ namespace ya
 		{
 			Vector3 curr_pos = GetOwner()->GetComponent<Transform>()->GetPosition();
 			feet->GetComponent<Transform>()->SetPosition(Vector3(curr_pos.x, curr_pos.y - 0.4f, curr_pos.z));
-		}
+		}	
 		if (head != nullptr)
 		{
 			Vector3 curr_pos = GetOwner()->GetComponent<Transform>()->GetPosition();
@@ -120,8 +122,15 @@ namespace ya
 		{
 			Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
 			rb->KnockbackOn(Vector2(2,3));
+			mState = Knockback;
+			isCtrlAble = false;
+			isInivisible = true;
+			GetOwner()->GetComponent<Animator>()->Play(L"LeftJump", false);
 		}
-		InputCtrl();
+		if (isCtrlAble)
+		{
+			InputCtrl();
+		}
 	}
 
 	void PlayerScript::InputCtrl()
@@ -802,6 +811,16 @@ namespace ya
 		{
 			if (col->GetOwner()->GetLayerType() == eLayerType::Ground)
 			{
+				if (mState == Knockback)
+				{
+					Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+					if (!rb->GetIsKnockback())
+					{
+						isInivisible = false;
+						isCtrlAble = true;
+						
+					}
+				}
 				if (mState == Fall)
 				{
 					if (direction == LeftAhead)
@@ -825,6 +844,9 @@ namespace ya
 				{
 					GetOwner()->GetComponent<Animator>()->Play(L"RightIdle",false);
 				}
+
+				
+
 				isGround = true;
 				Rigidbody* rb= GetOwner()->GetComponent<Rigidbody>();
 				rb->GravityOff();
@@ -844,6 +866,48 @@ namespace ya
 		{
 			isFeetHit_rope = true;
 		}
+	
+		if (!isInivisible)
+		{
+			if (receive_layer == eLayerType::Head || 
+				receive_layer == eLayerType::Leftbody||
+				receive_layer == eLayerType::RightBody)
+			{
+				if (col->GetOwner()->GetLayerType() == eLayerType::MonsterFeet ||
+					col->GetOwner()->GetLayerType() == eLayerType::MonsterLeftbody ||
+					col->GetOwner()->GetLayerType() == eLayerType::MonsterRightBody)
+				{
+					if (col->GetPosition().x < GetOwner()->GetComponent<Transform>()->GetPosition().x)
+					{
+						Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+						rb->KnockbackOn(Vector2(2, 3));
+						mState = Knockback;
+						isCtrlAble = false;
+						isInivisible = true;
+					}
+					else
+					{
+						Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+						rb->KnockbackOn(Vector2(-2, 3));
+						mState = Knockback;
+						isCtrlAble = false;
+						isInivisible = true;
+					}
+					if (direction == LeftAhead)
+					{
+						GetOwner()->GetComponent<Animator>()->Play(L"LeftJump", false);
+					}
+					else
+					{
+						GetOwner()->GetComponent<Animator>()->Play(L"RightJump", false);
+					}
+
+
+				}
+			}
+		}
+
+
 	}
 
 	void PlayerScript::ReciveColStay(eLayerType receive_layer, Collider2D* col)

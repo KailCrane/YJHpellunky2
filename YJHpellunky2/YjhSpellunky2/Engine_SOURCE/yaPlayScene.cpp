@@ -418,7 +418,7 @@ namespace ya
 			shotgun_obj->SetName(L"Shotgun");
 
 			Transform* tr = shotgun_obj->GetComponent<Transform>();
-			tr->SetPosition(Vector3(0.0f, 3.0f, 0.8f));
+			tr->SetPosition(Vector3(2.0f, 3.0f, 0.8f));
 			tr->SetScale(Vector3(0.7f, 0.7f, 1.0f));
 
 			Collider2D* collider = shotgun_obj->AddComponent<Collider2D>();
@@ -544,6 +544,25 @@ namespace ya
 		CollisionManager::CollisionLayerCheck(eLayerType::Rope, eLayerType::Head,true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Whip, eLayerType::Monster,true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Bullet, eLayerType::Monster,true);
+
+		CollisionManager::CollisionLayerCheck(eLayerType::Leftbody, eLayerType::MonsterLeftbody,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Leftbody, eLayerType::MonsterRightBody,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Leftbody, eLayerType::MonsterHead,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Leftbody, eLayerType::MonsterFeet,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::RightBody, eLayerType::MonsterLeftbody, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::RightBody, eLayerType::MonsterRightBody, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::RightBody, eLayerType::MonsterHead, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::RightBody, eLayerType::MonsterFeet, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Head, eLayerType::MonsterLeftbody, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Head, eLayerType::MonsterRightBody, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Head, eLayerType::MonsterHead, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Head, eLayerType::MonsterFeet, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::MonsterLeftbody, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::MonsterRightBody, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::MonsterHead, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::MonsterFeet, true);
+
+
 
 		Scene::Initalize();
 	}

@@ -44,13 +44,6 @@ namespace ya
 
 		void FallCheck();
 
-		void SetBombs(GameObject* _bombs[]) {
-			for (int i = 0; i > 100; i++)
-			{
-				_bombs[i] = bombs[i];
-			};
-		}
-
 		void LifeUp() {curr_life ++;}
 		void LifeDown(){curr_life--; }
 
@@ -80,18 +73,16 @@ namespace ya
 			JumpAttack,
 			StandAtack,
 			GetUp,
-			RidingRope
+			RidingRope,
+			Knockback
 		};
-
+		CharacterState mState;
 		enum CharacterDircetion
 		{
 			LeftAhead,
 			RightAhead
 		};
-
 		CharacterDircetion direction;
-		CharacterState mState;
-
 		enum CharacterHealthState
 		{
 			Nomal,
@@ -100,16 +91,12 @@ namespace ya
 		};
 		CharacterHealthState healthState;
 
+		bool isCtrlAble;
 
-
-		bool ControllAble;
 		int curr_life;
-
 		float move_speed;
-
 		int jump_count;
 		float pressing_timer;
-
 
 		bool isAttack;
 		bool isMove;
@@ -127,8 +114,6 @@ namespace ya
 		bool isHas_front_equip;
 		bool isInterctWeapon;
 
-		GameObject* bombs[100];
-
 		GameObject* feet;
 		GameObject* head;
 
@@ -140,6 +125,8 @@ namespace ya
 		GameObject* right_body;
 		
 		WhipScript* my_whip;
+
+		bool isInivisible;
 
 
 		///StatusEffect
