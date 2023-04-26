@@ -74,7 +74,8 @@ namespace ya
 			StandAtack,
 			GetUp,
 			RidingRope,
-			Knockback
+			Knockback,
+			Die
 		};
 		CharacterState mState;
 		enum CharacterDircetion

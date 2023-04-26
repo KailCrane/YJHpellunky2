@@ -818,7 +818,6 @@ namespace ya
 					{
 						isInivisible = false;
 						isCtrlAble = true;
-						
 					}
 				}
 				if (mState == Fall)
@@ -835,17 +834,30 @@ namespace ya
 					}
 				}
 				jump_count = 1;
-				mState = Idle;
-				if (direction == LeftAhead)
+				if (mState != Die)
 				{
-					GetOwner()->GetComponent<Animator>()->Play(L"LeftIdle",false);
+					mState = Idle;
+					if (direction == LeftAhead)
+					{
+						GetOwner()->GetComponent<Animator>()->Play(L"LeftIdle", false);
+					}
+					else
+					{
+						GetOwner()->GetComponent<Animator>()->Play(L"RightIdle", false);
+					}
 				}
 				else
 				{
-					GetOwner()->GetComponent<Animator>()->Play(L"RightIdle",false);
-				}
+					if (direction == LeftAhead)
+					{
+						GetOwner()->GetComponent<Animator>()->Play(L"LeftGroundDead", false);
 
-				
+					}
+					else
+					{
+						GetOwner()->GetComponent<Animator>()->Play(L"RightGroundDead", false);
+					}
+				}
 
 				isGround = true;
 				Rigidbody* rb= GetOwner()->GetComponent<Rigidbody>();
@@ -879,30 +891,70 @@ namespace ya
 				{
 					if (col->GetPosition().x < GetOwner()->GetComponent<Transform>()->GetPosition().x)
 					{
-						Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
-						rb->KnockbackOn(Vector2(2, 3));
-						mState = Knockback;
-						isCtrlAble = false;
-						isInivisible = true;
+						curr_life -= 1;
+
+						if (curr_life > 0)
+						{
+							Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+							rb->KnockbackOn(Vector2(2, 3));
+							mState = Knockback;
+							isInivisible = true;
+							isCtrlAble = false;
+						}
+						else
+						{
+							Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+							rb->KnockbackOn(Vector2(6, 3));
+							mState = Die;
+							isInivisible = true;
+							isCtrlAble = false;
+						}
+
 					}
 					else
 					{
-						Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
-						rb->KnockbackOn(Vector2(-2, 3));
-						mState = Knockback;
-						isCtrlAble = false;
-						isInivisible = true;
+						if (curr_life > 0)
+						{
+							Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+							rb->KnockbackOn(Vector2(-2, 3));
+							mState = Knockback;
+							isCtrlAble = false;
+							isInivisible = true;
+						}
+						else
+						{
+							Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+							rb->KnockbackOn(Vector2(-6, 3));
+							mState = Die;
+							isInivisible = true;
+							isCtrlAble = false;
+						}
+
 					}
-					if (direction == LeftAhead)
+
+					if (curr_life > 0)
 					{
-						GetOwner()->GetComponent<Animator>()->Play(L"LeftJump", false);
+						if (direction == LeftAhead)
+						{
+							GetOwner()->GetComponent<Animator>()->Play(L"LeftJump", false);
+						}
+						else
+						{
+							GetOwner()->GetComponent<Animator>()->Play(L"RightJump", false);
+						}
 					}
 					else
 					{
-						GetOwner()->GetComponent<Animator>()->Play(L"RightJump", false);
+						if (direction == LeftAhead)
+						{
+							GetOwner()->GetComponent<Animator>()->Play(L"LeftDead", false);
+						
+}
+						else
+						{
+							GetOwner()->GetComponent<Animator>()->Play(L"RightDead", false);
+						}
 					}
-
-
 				}
 			}
 		}

@@ -110,6 +110,11 @@ namespace ya
 			animator->Create(L"HangOnRope", texture_R, Vector2(0.0f, 128.0f * 7), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
 			animator->Create(L"GoUpRope", texture_R, Vector2(0.0f, 128.0f * 7), Vector2(128.0f, 128.0f), Vector2::Zero, 10, 0.05f, false);
 			animator->Create(L"GoDownRope", texture_R, Vector2(0.0f, 128.0f * 7), Vector2(128.0f, 128.0f), Vector2::Zero, 10, 0.05f, true);
+			
+			animator->Create(L"LeftDead", texture_L, Vector2(128.0f * 14, 128.0f * 2), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, true);
+			animator->Create(L"RightDead", texture_R, Vector2(128.0f * 1, 128.0f * 2), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+			animator->Create(L"LeftGroundDead", texture_L, Vector2(128.0f * 6, 128.0f * 0), Vector2(128.0f, 128.0f), Vector2::Zero, 1 ,0.05f, true);
+			animator->Create(L"RightGroundDead", texture_R, Vector2(128.0f * 9, 128.0f * 0), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
 
 
 
@@ -294,7 +299,7 @@ namespace ya
 			caveman_obj->SetLayerType(eLayerType::Monster);
 			caveman_obj->SetName(L"CaveMan1");
 			Transform* tr = caveman_obj->GetComponent<Transform>();
-			tr->SetPosition(Vector3(0.0f,1.0f,1.1f));
+			tr->SetPosition(Vector3(-1.0f,1.0f,1.1f));
 			tr->SetScale(Vector3(1.0f, 1.0f, 1.1f));
 
 			Collider2D* collider = caveman_obj->AddComponent<Collider2D>();
