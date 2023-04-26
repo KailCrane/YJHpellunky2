@@ -142,10 +142,6 @@ namespace ya
 		WhipScript* my_whip;
 
 
-		///KnockBack
-		float knoback_recover_time;
-		float knoback_timer;
-
 		///StatusEffect
 	};
 }

@@ -1,6 +1,6 @@
 #include "yaShotGunScript.h"
 #include "yaTime.h"
-#include "yaGravity.h"
+#include "yaRigidbody.h"
 #include "yaBulletScript.h"
 
 namespace ya
@@ -83,7 +83,7 @@ namespace ya
 	{
 		if (collider->GetOwner()->GetLayerType() == eLayerType::Ground)
 		{
-			this->GetOwner()->GetComponent<Gravity>()->GravityOff();
+			this->GetOwner()->GetComponent<Rigidbody>()->GravityOff();
 		}
 	}
 	void ShotGunScript::OnCollisionStay(Collider2D* collider)
@@ -93,7 +93,7 @@ namespace ya
 	{
 		if (collider->GetOwner()->GetLayerType() == eLayerType::Ground)
 		{
-			this->GetOwner()->GetComponent<Gravity>()->GravityOn();
+			this->GetOwner()->GetComponent<Rigidbody>()->GravityOn();
 		}
 	}
 	void ShotGunScript::OnTriggerEnter(Collider2D* collider)

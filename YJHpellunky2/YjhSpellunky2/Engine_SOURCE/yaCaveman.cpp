@@ -1,5 +1,5 @@
 #include "yaCaveman.h"
-#include "yaGravity.h"
+#include "yaRigidbody.h"
 #include "yaTime.h"
 
 namespace ya
@@ -142,8 +142,8 @@ namespace ya
 	{
 		if (receive_layer == eLayerType::MonsterFeet && col->GetOwner()->GetLayerType() == eLayerType::Ground)
 		{
-			Gravity* gravity = GetOwner()->GetComponent<Gravity>();
-			gravity->GravityOff();
+			Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+			rb->GravityOff();
 		}
 		if (receive_layer == eLayerType::MonsterHead && col->GetOwner()->GetLayerType() == eLayerType::Feet)
 		{
@@ -160,8 +160,8 @@ namespace ya
 	{
 		if (receive_layer == eLayerType::MonsterFeet && col->GetOwner()->GetLayerType() == eLayerType::Ground)
 		{
-			Gravity* gravity = GetOwner()->GetComponent<Gravity>();
-			gravity->GravityOn();
+			Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+			rb->GravityOn();
 		}
 	}
 

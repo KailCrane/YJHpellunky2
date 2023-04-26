@@ -264,7 +264,6 @@
     <ClCompile Include="yaBomb.cpp">
       <Filter>Component\Script\Item</Filter>
     </ClCompile>
-    <ClCompile Include="yaGravity.cpp" />
     <ClCompile Include="yaWhip.cpp">
       <Filter>Component\Script\Item\Whip</Filter>
     </ClCompile>
@@ -304,6 +303,7 @@
     <ClCompile Include="yaRopeThrowScript.cpp">
       <Filter>Component\Script\Item\Rope\Throw</Filter>
     </ClCompile>
+    <ClCompile Include="yaRigidbody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -459,7 +459,6 @@
     <ClInclude Include="yaBomb.h">
       <Filter>Component\Script\Item</Filter>
     </ClInclude>
-    <ClInclude Include="yaGravity.h" />
     <ClInclude Include="yaWhip.h">
       <Filter>Component\Script\Item\Whip</Filter>
     </ClInclude>
@@ -499,6 +498,7 @@
     <ClInclude Include="yaRopeThrow.h">
       <Filter>Component\Script\Item\Rope\Throw</Filter>
     </ClInclude>
+    <ClInclude Include="yaRigidbody.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">

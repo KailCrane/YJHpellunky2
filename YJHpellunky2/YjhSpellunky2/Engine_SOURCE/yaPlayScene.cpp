@@ -14,7 +14,7 @@
 #include "yaPlayer.h"
 #include "yaAnimator.h"
 #include "yaAnimation.h"
-#include "yaGravity.h"
+#include "yaRigidbody.h"
 #include "yaCollisionManager.h"
 #include "yaWhip.h"
 #include "yaWhipScript.h"
@@ -128,7 +128,7 @@ namespace ya
 			pScript = my_player->AddComponent<PlayerScript>();
 			pScript->SetCamera(cameraObj);
 
-			Gravity* pGravity = my_player->AddComponent<Gravity>();
+			Rigidbody* pRb = my_player->AddComponent<Rigidbody>();
 			
 
 			ColTransfer* pFeet_obj = object::Instantiate<ColTransfer>(eLayerType::Feet, this);;
@@ -310,7 +310,7 @@ namespace ya
 			caveman_animator->Play(L"CavemanIdle", false);
 
 			Caveman* caveman_script = caveman_obj->AddComponent<Caveman>();
-			Gravity* caveman_gravity = caveman_obj->AddComponent<Gravity>();
+			Rigidbody* caveman_Rb = caveman_obj->AddComponent<Rigidbody>();
 
 			SpriteRenderer* mr = caveman_obj->AddComponent<SpriteRenderer>();
 			std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");
@@ -433,7 +433,7 @@ namespace ya
 			shotgun_animator->Create(L"IdleR", shotgun_texture_R, Vector2(0.0f, 384.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
 
 			shotgun_animator->Play(L"IdleR", false);
-			shotgun_obj->AddComponent<Gravity>();
+			shotgun_obj->AddComponent<Rigidbody>();
 			ShotGunScript* shogun_Script = shotgun_obj->AddComponent<ShotGunScript>();
 
 			SpriteRenderer* mr = shotgun_obj->AddComponent<SpriteRenderer>();

@@ -5,7 +5,7 @@
 #include "yaTime.h"
 #include "yaAnimator.h"
 #include "yaRenderer.h"
-#include "yaGravity.h"
+#include "yaRigidbody.h"
 #include "yaWhipScript.h"
 #include "yaShotGunScript.h"
 #include "yaRopeThrowScript.h"
@@ -87,8 +87,8 @@ namespace ya
 			{
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 				ShotGunScript* shotgun = front_equip->GetScript<ShotGunScript>();
-				Gravity* gr = front_equip->GetComponent<Gravity>();
-				gr->GravityOff();
+				Rigidbody* rb = front_equip->GetComponent<Rigidbody>();
+				rb->GravityOff();
 				if (direction == LeftAhead)
 				{
 					front_equip->GetComponent<Transform>()->SetPosition(Vector3(tr->GetPosition().x - 0.2f, tr->GetPosition().y - 0.25f, tr->GetPosition().z));
@@ -114,6 +114,12 @@ namespace ya
 					}
 				}
 			}
+		}
+
+		if (Input::GetKeyState(eKeyCode::P) == eKeyState::DOWN)
+		{
+			Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+			rb->KnockbackOn(Vector2(2,3));
 		}
 		InputCtrl();
 	}
@@ -457,9 +463,9 @@ namespace ya
 				if (!isHeadHit_rope && !isFeetHit_rope)
 				{
 					mState = Fall;
-					if (!GetOwner()->GetComponent<Gravity>()->GetIsGravity())
+					if (!GetOwner()->GetComponent<Rigidbody>()->GetIsGravity())
 					{
-						GetOwner()->GetComponent<Gravity>()->GravityOn();
+						GetOwner()->GetComponent<Rigidbody>()->GravityOn();
 					}
 				}
 				else
@@ -615,14 +621,16 @@ namespace ya
 		{
 			if (mState == Jump)
 			{
+				Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+
 				jump_timer += Time::DeltaTime();
-				GetOwner()->GetComponent<Gravity>()->AddForce(Vector2(0.0f, 10.0f));
+				rb->AddForce(Vector2(0.0f, 10.0f));
 
 				if (jump_timer >= max_jump_time)
 				{
 					jump_timer = 0;
-					GetOwner()->GetComponent<Gravity>()->Reset();
-					GetOwner()->GetComponent<Gravity>()->GravityOn();
+					rb->Reset();
+					rb->GravityOn();
 					mState = Fall;
 				}
 			}
@@ -632,8 +640,8 @@ namespace ya
 			if (mState == Jump)
 			{
 				jump_timer = 0;
-				GetOwner()->GetComponent<Gravity>()->Reset();
-				GetOwner()->GetComponent<Gravity>()->GravityOn();
+				GetOwner()->GetComponent<Rigidbody>()->Reset();
+				GetOwner()->GetComponent<Rigidbody>()->GravityOn();
 				mState == Fall;
 			}
 		}
@@ -647,7 +655,7 @@ namespace ya
 					if (mState == Crawl || mState == Crouch)
 					{
 						front_equip = interact_obj;
-						front_equip->GetComponent<Gravity>()->GravityOff();
+						front_equip->GetComponent<Rigidbody>()->GravityOff();
 						isHas_front_equip = true;
 					}
 				}
@@ -672,8 +680,8 @@ namespace ya
 			{
 				if (mState == Crawl || mState == Crouch)
 				{
-					Gravity* gr = front_equip->GetComponent<Gravity>();
-					gr->GravityOn();
+					Rigidbody* rb = front_equip->GetComponent<Rigidbody>();
+					rb->GravityOn();
 					isHas_front_equip = false;
 					front_equip = nullptr;
 				}
@@ -818,8 +826,8 @@ namespace ya
 					GetOwner()->GetComponent<Animator>()->Play(L"RightIdle",false);
 				}
 				isGround = true;
-				Gravity* gravity = GetOwner()->GetComponent<Gravity>();
-				gravity->GravityOff();
+				Rigidbody* rb= GetOwner()->GetComponent<Rigidbody>();
+				rb->GravityOff();
 			}
 			if (col->GetOwner()->GetLayerType() == eLayerType::ShotGun)
 			{
@@ -863,8 +871,8 @@ namespace ya
 					Vector3 curr_pos = GetOwner()->GetComponent<Transform>()->GetPosition();
 					Vector3 rope_pos = col->GetOwner()->GetComponent<Transform>()->GetPosition();
 					GetOwner()->GetComponent<Transform>()->SetPosition(Vector3(rope_pos.x, curr_pos.y, curr_pos.z));
-					Gravity* gravity = GetOwner()->GetComponent<Gravity>();
-					gravity->GravityOff();
+					Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+					rb->GravityOff();
 					mState = RidingRope;
 				}
 			}
@@ -885,8 +893,8 @@ namespace ya
 				isGround = false;
 				if (mState != RidingRope)
 				{
-					Gravity* gravity = GetOwner()->GetComponent<Gravity>();
-					gravity->GravityOn();
+					Rigidbody* rb= GetOwner()->GetComponent<Rigidbody>();
+					rb->GravityOn();
 				}
 			}
 			if (col->GetOwner()->GetLayerType() == eLayerType::ShotGun)
