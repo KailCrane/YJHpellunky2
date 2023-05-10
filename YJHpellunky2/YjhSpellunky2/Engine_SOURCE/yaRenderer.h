@@ -7,6 +7,7 @@
 #include "yaShader.h"
 #include "yaConstantBuffer.h"
 #include "yaCamera.h"
+#include "yaLight.h"
 
 using namespace ya::math;
 using namespace ya::graphics;
@@ -54,6 +55,13 @@ namespace ya::renderer
 		UINT type;
 	};
 
+
+	CBUFFER(TextureCB, CBSLOT_TEXTURE)
+	{
+		Vector2 leftTop;
+		Vector2 atlasSize;
+	};
+
 	extern Vertex vertexes[4];
 	extern Camera* mainCamera;
 	extern ConstantBuffer* constantBuffers[];
@@ -64,6 +72,7 @@ namespace ya::renderer
 	
 	extern std::vector<Camera*> cameras[];
 	extern std::vector<DebugMesh> debugMeshes;
+	extern std::vector<LightAttribute> lights;
 
 	void Initialize();
 	void Render();

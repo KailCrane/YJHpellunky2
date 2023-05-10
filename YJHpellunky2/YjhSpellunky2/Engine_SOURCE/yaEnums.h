@@ -16,6 +16,8 @@ namespace ya::enums
 		Camera,
 		Grid,
 		Bg,
+		Door,
+		Block,
 		Ground,
 		Ceiling,
 		Map,
@@ -36,10 +38,12 @@ namespace ya::enums
 		Arrow,
 		ShotGun,
 		Bullet,
+		ExitDoor,
 		UI,
 
 		End = 32,
 	};
+
 
 	enum class eComponentType
 	{
@@ -48,13 +52,12 @@ namespace ya::enums
 		Gravity, // 낙하를 위한 중력
 		Camera,
 		Mesh,
-		Collider,
-		//Collider2,
 		Animator,
+		Light,
 		MeshRenerer,
 		SpriteRenderer,
+		Collider,
 		UI,
-		//FadeOut,FadeIn
 		Script,
 		End,
 	};
@@ -91,6 +94,87 @@ namespace ya::enums
 		SecondDimension,
 		ThirdDimession,
 		End
+	};
+
+	enum class eItemType
+	{
+		AlienCompass,
+		Ankh,
+		ArrowofLight,
+		Arrows,
+		BearTrap,
+		Bomb,
+		BombBag,
+		BombBox,
+		BrokenSword,
+		CameraItem,
+		Cape,
+		Chest,
+		ClimbingGloves,
+		CloneGun,
+		Compass,
+		CookedTurkey,
+		Crate,
+		Crossbow,
+		Crown,
+		CursePot,
+		EggplantCrown,
+		Elixir,
+		Excalibur,
+		FourLeafClover,
+		FreezeRay,
+		GoldKey,
+		Hedjet,
+		HouYiBow,
+		HoverPack,
+		Idol,
+		Jetpack,
+		Kapala,
+		Key,
+		Landmine,
+		LockedChest,
+		Machete,
+		Mattock,
+		MetalShield,
+		Parachute,
+		Paste,
+		PitcherMitt,
+		PlasmaCannon,
+		PlayerBag,
+		PotofGold,
+		PowerPack,
+		Present,
+		PunishBall,
+		Rope,
+		RopeBox,
+		RopeBag,
+		RoyalJelly,
+		Scepter,
+		Scrap,
+		Shotgun,
+		Spectacles,
+		SpikesShoes,
+		SpringShoes,
+		TabletofDestiny,
+		TekePack,
+		TelePoter,
+		TheTrueCrown,
+		TheTuskIdol,
+		Thrownables, 
+		Torch,
+		UdjatEyes,
+		Ushabti,
+		vladCape,
+		Webgun,
+		WoodenShield
+	};
+
+	enum class eLightType
+	{
+		Directional,
+		Point,
+		Spot,
+		End,
 	};
 
 	//struct Ray

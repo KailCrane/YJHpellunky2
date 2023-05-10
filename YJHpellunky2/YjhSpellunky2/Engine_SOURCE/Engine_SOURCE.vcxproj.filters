@@ -124,6 +124,9 @@
     <Filter Include="Component\Script\Item\Rope\Throw">
       <UniqueIdentifier>{4f43faee-db35-4460-b1cb-b60d814bc726}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Script\Item\Base">
+      <UniqueIdentifier>{3bd3a589-c781-4e9a-852d-495b99a1f1af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yaApplication.cpp">
@@ -304,6 +307,17 @@
       <Filter>Component\Script\Item\Rope\Throw</Filter>
     </ClCompile>
     <ClCompile Include="yaRigidbody.cpp" />
+    <ClCompile Include="yaBombScript.cpp" />
+    <ClCompile Include="yaItem.cpp">
+      <Filter>Component\Script\Item\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="yaArrows.cpp" />
+    <ClCompile Include="yaLight.cpp" />
+    <ClCompile Include="yaStructedBuffer.cpp" />
+    <ClCompile Include="yaStage.cpp" />
+    <ClCompile Include="yaDispenser.cpp" />
+    <ClCompile Include="yaDoor.cpp" />
+    <ClCompile Include="yaTotemTrap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -499,6 +513,17 @@
       <Filter>Component\Script\Item\Rope\Throw</Filter>
     </ClInclude>
     <ClInclude Include="yaRigidbody.h" />
+    <ClInclude Include="yaBombScript.h" />
+    <ClInclude Include="yaItem.h">
+      <Filter>Component\Script\Item\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="yaArrows.h" />
+    <ClInclude Include="yaLight.h" />
+    <ClInclude Include="yaStructedBuffer.h" />
+    <ClInclude Include="yaStage.h" />
+    <ClInclude Include="yaDispenser.h" />
+    <ClInclude Include="yaDoor.h" />
+    <ClInclude Include="yaTotemTrap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">

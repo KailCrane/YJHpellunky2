@@ -2,7 +2,6 @@
 #include "yaResources.h"
 #include "yaMaterial.h"
 #include "yaSceneManager.h"
-
 namespace ya::renderer
 {
 	Vertex vertexes[4] = {};
@@ -15,6 +14,7 @@ namespace ya::renderer
 	Camera* mainCamera = nullptr;
 	std::vector<Camera*> cameras[(UINT)eSceneType::End];
 	std::vector<DebugMesh> debugMeshes;
+	std::vector<LightAttribute> lights;
 
 	void LoadMesh()
 	{
@@ -325,6 +325,10 @@ namespace ya::renderer
 
 		constantBuffers[(UINT)eCBType::Animation] = new ConstantBuffer(eCBType::Animation);
 		constantBuffers[(UINT)eCBType::Animation]->Create(sizeof(AnimationCB));
+
+		constantBuffers[(UINT)eCBType::Texture] = new ConstantBuffer(eCBType::Texture);
+		constantBuffers[(UINT)eCBType::Texture]->Create(sizeof(AnimationCB));
+
 	}
 
 	void LoadShader()
@@ -442,6 +446,102 @@ namespace ya::renderer
 
 		Resources::Load<Texture>(L"LeftArrow_Texture", L"CharSel\\LeftArrow.png");
 		Resources::Load<Texture>(L"RightArrow_Texture", L"CharSel\\RightArrow.png");
+
+		Resources::Load<Texture>(L"Entrance_Texture", L"FloorCave\\Entrance.png");
+		Resources::Load<Texture>(L"Exit_Texture", L"FloorCave\\Exit.png");
+
+#pragma region CaveDirtTexture
+		Resources::Load<Texture>(L"DirtTexture1", L"FloorCave\\Tile1.png");
+		Resources::Load<Texture>(L"DirtTexture2", L"FloorCave\\Tile2.png");
+		Resources::Load<Texture>(L"DirtTexture3", L"FloorCave\\Tile3.png");
+		Resources::Load<Texture>(L"DirtTexture4", L"FloorCave\\Tile4.png");
+		Resources::Load<Texture>(L"DirtTexture5", L"FloorCave\\Tile5.png");
+		Resources::Load<Texture>(L"DirtTexture6", L"FloorCave\\Tile6.png");
+		Resources::Load<Texture>(L"DirtTexture7", L"FloorCave\\Tile7.png");
+		Resources::Load<Texture>(L"DirtTexture8", L"FloorCave\\Tile8.png");
+		Resources::Load<Texture>(L"DirtTexture9", L"FloorCave\\Tile9.png");
+		Resources::Load<Texture>(L"DirtTexture10", L"FloorCave\\Tile10.png");
+		Resources::Load<Texture>(L"DirtTexture11", L"FloorCave\\Tile11.png");
+		Resources::Load<Texture>(L"DirtTexture12", L"FloorCave\\Tile12.png");
+		Resources::Load<Texture>(L"DirtTexture13", L"FloorCave\\Tile13.png");
+		Resources::Load<Texture>(L"DirtTexture14", L"FloorCave\\Tile14.png");
+		Resources::Load<Texture>(L"DirtTexture15", L"FloorCave\\Tile15.png");
+		Resources::Load<Texture>(L"DirtTexture16", L"FloorCave\\Tile16.png");
+		Resources::Load<Texture>(L"DirtTexture17", L"FloorCave\\Tile17.png");
+		Resources::Load<Texture>(L"DirtTexture18", L"FloorCave\\Tile18.png");
+		Resources::Load<Texture>(L"DirtTexture19", L"FloorCave\\Tile19.png");
+		Resources::Load<Texture>(L"DirtTexture20", L"FloorCave\\Tile20.png");
+		Resources::Load<Texture>(L"DirtTexture21", L"FloorCave\\Tile21.png");
+		Resources::Load<Texture>(L"DirtTexture22", L"FloorCave\\Tile22.png");
+		Resources::Load<Texture>(L"DirtTexture23", L"FloorCave\\Tile23.png");
+		Resources::Load<Texture>(L"DirtTexture24", L"FloorCave\\Tile24.png");
+		Resources::Load<Texture>(L"DirtTexture25", L"FloorCave\\Tile25.png");
+		Resources::Load<Texture>(L"DirtTexture26", L"FloorCave\\Tile26.png");
+		Resources::Load<Texture>(L"DirtTexture27", L"FloorCave\\Tile27.png");
+		Resources::Load<Texture>(L"DirtTexture28", L"FloorCave\\Tile28.png");
+
+#pragma endregion
+
+#pragma region CaveWooldFloor
+
+		Resources::Load<Texture>(L"WoodTileTexture1", L"FloorstyledWood\\Tile1.png");
+		Resources::Load<Texture>(L"WoodTileTexture2", L"FloorstyledWood\\Tile2.png");
+		Resources::Load<Texture>(L"WoodTileTexture3", L"FloorstyledWood\\Tile3.png");
+		Resources::Load<Texture>(L"WoodTileTexture4", L"FloorstyledWood\\Tile4.png");
+		Resources::Load<Texture>(L"WoodTileTexture5", L"FloorstyledWood\\Tile5.png");
+		Resources::Load<Texture>(L"WoodTileTexture6", L"FloorstyledWood\\Tile6.png");
+		Resources::Load<Texture>(L"WoodTileTexture7", L"FloorstyledWood\\Tile7.png");
+		Resources::Load<Texture>(L"WoodTileTexture8", L"FloorstyledWood\\Tile8.png");
+		Resources::Load<Texture>(L"WoodTileTexture9", L"FloorstyledWood\\Tile9.png");
+		Resources::Load<Texture>(L"WoodTileTexture10", L"FloorstyledWood\\Tile10.png");
+		Resources::Load<Texture>(L"WoodTileTexture11", L"FloorstyledWood\\Tile11.png");
+		Resources::Load<Texture>(L"WoodTileTexture12", L"FloorstyledWood\\Tile12.png");
+		Resources::Load<Texture>(L"WoodTileTexture13", L"FloorstyledWood\\Tile13.png");
+		Resources::Load<Texture>(L"WoodTileTexture14", L"FloorstyledWood\\Tile14.png");
+		Resources::Load<Texture>(L"WoodTileTexture15", L"FloorstyledWood\\Tile15.png");
+		Resources::Load<Texture>(L"WoodTileTexture16", L"FloorstyledWood\\Tile16.png");
+		Resources::Load<Texture>(L"WoodTileTexture17", L"FloorstyledWood\\Tile17.png");
+		Resources::Load<Texture>(L"WoodTileTexture18", L"FloorstyledWood\\Tile18.png");
+		Resources::Load<Texture>(L"WoodTileTexture19", L"FloorstyledWood\\Tile19.png");
+		Resources::Load<Texture>(L"WoodTileTexture20", L"FloorstyledWood\\Tile20.png");
+		Resources::Load<Texture>(L"WoodTileTexture21", L"FloorstyledWood\\Tile21.png");
+		Resources::Load<Texture>(L"WoodTileTexture22", L"FloorstyledWood\\Tile22.png");
+		Resources::Load<Texture>(L"WoodTileTexture23", L"FloorstyledWood\\Tile23.png");
+		Resources::Load<Texture>(L"WoodTileTexture24", L"FloorstyledWood\\Tile24.png");
+		Resources::Load<Texture>(L"WoodTileTexture25", L"FloorstyledWood\\Tile25.png");
+		Resources::Load<Texture>(L"WoodTileTexture26", L"FloorstyledWood\\Tile26.png");
+		Resources::Load<Texture>(L"WoodTileTexture27", L"FloorstyledWood\\Tile27.png");
+		Resources::Load<Texture>(L"WoodTileTexture28", L"FloorstyledWood\\Tile28.png");
+		Resources::Load<Texture>(L"WoodTileTexture29", L"FloorstyledWood\\Tile29.png");
+		Resources::Load<Texture>(L"WoodTileTexture30", L"FloorstyledWood\\Tile30.png");
+		Resources::Load<Texture>(L"WoodTileTexture31", L"FloorstyledWood\\Tile31.png");
+		Resources::Load<Texture>(L"WoodTileTexture32", L"FloorstyledWood\\Tile32.png");
+		Resources::Load<Texture>(L"WoodTileTexture33", L"FloorstyledWood\\Tile33.png");
+		Resources::Load<Texture>(L"WoodTileTexture34", L"FloorstyledWood\\Tile34.png");
+		Resources::Load<Texture>(L"WoodTileTexture35", L"FloorstyledWood\\Tile35.png");
+		Resources::Load<Texture>(L"WoodTileTexture36", L"FloorstyledWood\\Tile36.png");
+		Resources::Load<Texture>(L"WoodTileTexture37", L"FloorstyledWood\\Tile37.png");
+		Resources::Load<Texture>(L"WoodTileTexture38", L"FloorstyledWood\\Tile38.png");
+		Resources::Load<Texture>(L"WoodTileTexture39", L"FloorstyledWood\\Tile39.png");
+		Resources::Load<Texture>(L"WoodTileTexture40", L"FloorstyledWood\\Tile40.png");
+		Resources::Load<Texture>(L"WoodTileTexture41", L"FloorstyledWood\\Tile41.png");
+		Resources::Load<Texture>(L"WoodTileTexture42", L"FloorstyledWood\\Tile42.png");
+		Resources::Load<Texture>(L"WoodTileTexture43", L"FloorstyledWood\\Tile43.png");
+		Resources::Load<Texture>(L"WoodTileTexture44", L"FloorstyledWood\\Tile44.png");
+		Resources::Load<Texture>(L"WoodTileTexture45", L"FloorstyledWood\\Tile45.png");
+		Resources::Load<Texture>(L"WoodTileTexture46", L"FloorstyledWood\\Tile46.png");
+		Resources::Load<Texture>(L"WoodTileTexture47", L"FloorstyledWood\\Tile47.png");
+		
+
+
+
+
+#pragma endregion
+
+
+		
+
+
 
 	}
 
@@ -835,8 +935,48 @@ namespace ya::renderer
 			deco_basecamp_uroboros_material->SetShader(deco_basecamp_uroboros_shader);
 			deco_basecamp_uroboros_material->SetTexture(deco_basecamp_uroboros_texture);
 			Resources::Insert<Material>(L"deco_basecamp_uroborosMaterial", deco_basecamp_uroboros_material);
+#pragma endregion
+
+#pragma region DirtBlock
+			for (int i = 1; i < 29; i++)
+			{
+				std::shared_ptr <Texture> dirtTexture = Resources::Find<Texture>(L"DirtTexture" + std::to_wstring(i));
+				std::shared_ptr<Shader> dirtShader = Resources::Find<Shader>(L"RectShader");
+				std::shared_ptr<Material> dirtMaterial = std::make_shared<Material>();
+				dirtMaterial->SetShader(dirtShader);
+				dirtMaterial->SetTexture(dirtTexture);
+				Resources::Insert<Material>(L"DirtMaterial" + std::to_wstring(i), dirtMaterial);
+			}
+
+#pragma endregion
+
+#pragma region WoodFloor
+			for (int i = 1; i < 47; i++)
+			{
+				std::shared_ptr <Texture> woodTileTexture = Resources::Find<Texture>(L"WoodTileTexture" + std::to_wstring(i));
+				std::shared_ptr<Shader> woodTileShader = Resources::Find<Shader>(L"RectShader");
+				std::shared_ptr<Material> woodTileMaterial = std::make_shared<Material>();
+				woodTileMaterial->SetShader(woodTileShader);
+				woodTileMaterial->SetTexture(woodTileTexture);
+				Resources::Insert<Material>(L"WoodTileMaterial"+std::to_wstring(i), woodTileMaterial);
+			}
+#pragma endregion
 
 
+			std::shared_ptr <Texture> entrance_texture = Resources::Find<Texture>(L"Entrance_Texture");
+			std::shared_ptr<Shader> entrance_shader = Resources::Find<Shader>(L"RectShader");
+			std::shared_ptr<Material> entrance_material = std::make_shared<Material>();
+			entrance_material->SetShader(entrance_shader);
+			entrance_material->SetTexture(entrance_texture);
+			Resources::Insert<Material>(L"entrance_Material", entrance_material);
+
+
+			std::shared_ptr <Texture> exit_texture = Resources::Find<Texture>(L"Exit_Texture");
+			std::shared_ptr<Shader> exit_shader = Resources::Find<Shader>(L"RectShader");
+			std::shared_ptr<Material> exit_material = std::make_shared<Material>();
+			exit_material->SetShader(entrance_shader);
+			exit_material->SetTexture(exit_texture);
+			Resources::Insert<Material>(L"exit_Material", exit_material);
 
 
 			// Grid

@@ -8,7 +8,13 @@
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaArrow.cpp"
 
 
+#include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaArrows.cpp"
+
+
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaBomb.cpp"
+
+
+#include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaBombScript.cpp"
 
 
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaBullet.cpp"
@@ -62,6 +68,12 @@
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaConstantBuffer.cpp"
 
 
+#include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaDispenser.cpp"
+
+
+#include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaDoor.cpp"
+
+
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaEarnItemUI.cpp"
 
 
@@ -80,7 +92,13 @@
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaInput.cpp"
 
 
+#include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaItem.cpp"
+
+
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaLayer.cpp"
+
+
+#include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaLight.cpp"
 
 
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaMaterial.cpp"
@@ -155,6 +173,12 @@
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaSpriteRenderer.cpp"
 
 
+#include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaStage.cpp"
+
+
+#include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaStructedBuffer.cpp"
+
+
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaTexture.cpp"
 
 
@@ -165,6 +189,9 @@
 
 
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaTitleScene.cpp"
+
+
+#include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaTotemTrap.cpp"
 
 
 #include "C:\DX11Project\YJHpellunky2\YJHpellunky2\YjhSpellunky2\Engine_SOURCE\yaTransform.cpp"

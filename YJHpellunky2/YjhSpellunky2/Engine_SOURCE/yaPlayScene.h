@@ -2,6 +2,8 @@
 #include "yaScene.h"
 #include "yaPlayer.h"
 #include "yaPlayerScript.h"
+#include "yaStage.h"
+
 namespace ya
 {
 	class PlayScene : public Scene
@@ -15,6 +17,8 @@ namespace ya
 		virtual void FixedUpdate() override;
 		virtual void Render() override;
 
+		void LoadStage();
+
 		virtual void OnEnter() override;
 		virtual void OnExit() override;
 	
@@ -25,5 +29,6 @@ namespace ya
 		PlayerScript* pScript;
 		WhipScript* whip;
 		bool isSceneActive;
+		Stage stage;
 	};
 }

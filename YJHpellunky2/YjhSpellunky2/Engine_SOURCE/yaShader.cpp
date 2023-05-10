@@ -91,5 +91,4 @@ namespace ya
 		GetDevice()->BindDepthStencilState(ds.Get());
 		GetDevice()->BindBlendState(bs.Get());
 	}
-
 }

@@ -651,7 +651,7 @@ namespace ya
 				jump_timer = 0;
 				GetOwner()->GetComponent<Rigidbody>()->Reset();
 				GetOwner()->GetComponent<Rigidbody>()->GravityOn();
-				mState == Fall;
+				mState = Fall;
 			}
 		}
 		
