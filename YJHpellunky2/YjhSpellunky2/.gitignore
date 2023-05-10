@@ -1,7 +1,6 @@
 *.user
 *.log
 *.res
-*.txt
 *.recipe
 *.ilk
 *.tlog
