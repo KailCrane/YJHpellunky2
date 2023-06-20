@@ -55,7 +55,6 @@ namespace ya
 			{
 				return mActiveAnimation->IsComplete();
 			}
-
 		}
 
 

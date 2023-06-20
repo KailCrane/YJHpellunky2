@@ -7,6 +7,12 @@
     <Filter Include="PS">
       <UniqueIdentifier>{05dfe299-0ec7-45a3-b6f2-b0f424c08f82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CS">
+      <UniqueIdentifier>{7932f56d-91fa-4a31-9fbf-0c65ecc1e492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GS">
+      <UniqueIdentifier>{7c04516b-9285-4d7d-9bb9-ba59facc96d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)TriangleVS.hlsl">
@@ -39,9 +45,29 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)DebugVS.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)PaintCS.hlsl">
+      <Filter>CS</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)ParticleCS.hlsl">
+      <Filter>CS</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)globals.hlsli" />
     <None Include="$(MSBuildThisFileDirectory)Light.hlsli" />
+    <None Include="$(MSBuildThisFileDirectory)Particle.hlsli" />
+    <None Include="$(MSBuildThisFileDirectory)ParticlePS.hlsl">
+      <Filter>PS</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)ParticleVS.hlsl">
+      <Filter>VS</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)ParticleGS.hlsl">
+      <Filter>GS</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Sampler.hlsli" />
+    <None Include="$(MSBuildThisFileDirectory)ConstantBuffer.hlsli" />
+    <None Include="$(MSBuildThisFileDirectory)Blur.hlsli" />
+    <None Include="$(MSBuildThisFileDirectory)Resource.hlsli" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,7 @@ struct VSIn
 struct VSOut
 {
     float4 Pos : SV_Position;
+    float3 WorldPos : POSITION;
     float4 Color : COLOR;
     float2 UV : TEXCOORD;
 };
@@ -22,26 +23,35 @@ float4 main(VSOut In) : SV_Target
     //color.a += time;
     
 
-    if (animationType == 1) //2d
+    if (animationType == 1) // 2D
     {
         float2 diff = (atlasSize - spriteSize) / 2.0f;
         float2 UV = (leftTop - diff - offset) + (atlasSize * In.UV);
-        
-        if (UV.x < leftTop.x || UV.y < leftTop.y 
-            || UV.x > leftTop.x + spriteSize.x 
-            || UV.y > leftTop.y + spriteSize.y)
-        {
-            discard;
-        }
-        
-            color = atlasTexutre.Sample(anisotropicSampler, UV);
+        if (UV.x < leftTop.x||UV.y < leftTop.y || UV.x > leftTop.x + spriteSize.x || UV.y > leftTop.y + spriteSize.y)
+        discard;
+
+        color = atlasTexture.Sample(anisotropicSampler, UV);
     }
     else
     {
+        //UV.x = -UV.x;
         color = defaultTexture.Sample(anisotropicSampler, In.UV);
     }
     
-        return color;
+    LightColor lightColor = (LightColor) 0.0f;
+    for (int i = 0; i < numberOfLight; i++)
+    {
+        CalculateLight(lightColor, In.WorldPos.xyz, i);
+    }
+    
+    //if (numberOfLight <= 0)
+    //{
+    //    lightColor = (LightColor) 1.0f;
+    //}
+    
+    //color *= lightColor.diffuse;
+    
+    return color;
     
     //color.a += time;
 }

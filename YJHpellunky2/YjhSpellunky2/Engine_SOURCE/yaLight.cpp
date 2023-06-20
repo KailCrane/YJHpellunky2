@@ -34,6 +34,10 @@ namespace ya
 		mAttribute.direction = Vector4(tr->Right().x, tr->Right().y, tr->Right().z, 1.0f);
 
 		renderer::lights.push_back(mAttribute);
+		//mAttribute.type = enums::eLightType::Directional;
+
+		renderer::PushLightAttribute(mAttribute);
+
 	}
 
 	void Light::Render()

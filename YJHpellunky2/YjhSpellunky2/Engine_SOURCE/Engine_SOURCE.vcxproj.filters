@@ -97,12 +97,6 @@
     <Filter Include="Component\Script\Contents\UI">
       <UniqueIdentifier>{f7609d97-d9a6-402b-b027-dec74df84eac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Script\Item">
-      <UniqueIdentifier>{a7885692-6506-4a1f-869c-4381428342e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Script\Item\Whip">
-      <UniqueIdentifier>{935e4f1e-3aa0-423d-9bb0-dc2d11e43edd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Script\Contents\Monster">
       <UniqueIdentifier>{3569460b-4744-40f4-9e4e-e18f5cd2edb2}</UniqueIdentifier>
     </Filter>
@@ -112,28 +106,97 @@
     <Filter Include="Component\Script\Common">
       <UniqueIdentifier>{a0b66402-1a04-47d6-93c8-9518497447e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Script\Item\ShotGun">
+    <Filter Include="Component\Script\Block">
+      <UniqueIdentifier>{84cdccfb-5ef8-41a9-a5b4-756802e4ff81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\Base">
+      <UniqueIdentifier>{5c594349-9cc8-45b5-8ea2-b946dd8fb1d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Buffer">
+      <UniqueIdentifier>{34ab1cf1-b116-46eb-a49f-02a808ebaaf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Api">
+      <UniqueIdentifier>{81432d05-ac37-412e-a02f-d9a4b98d40ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\ParticleScript">
+      <UniqueIdentifier>{213a3dbf-c229-4a9f-9a1b-e3f3806974c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\ParticleScript\Manager">
+      <UniqueIdentifier>{3917e436-d9d4-495c-9b7f-7670fcb20316}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Player">
+      <UniqueIdentifier>{6d6c2ff1-0f31-44e1-8396-5c1a13b114c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Item">
+      <UniqueIdentifier>{a7885692-6506-4a1f-869c-4381428342e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Item\Whip">
+      <UniqueIdentifier>{935e4f1e-3aa0-423d-9bb0-dc2d11e43edd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Item\ShotGun">
       <UniqueIdentifier>{2c784f36-ccbd-4e43-8b8a-befd2e43b595}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Script\Item\ShotGun\Bullet">
+    <Filter Include="Component\Script\Contents\Item\ShotGun\Bullet">
       <UniqueIdentifier>{04140c0a-dad5-4c85-a59c-dd91a9c61ec8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Script\Item\Rope">
+    <Filter Include="Component\Script\Contents\Item\Rope">
       <UniqueIdentifier>{9ff7ab3b-740c-497d-9a5c-d67c6ba1ed95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Script\Item\Rope\Throw">
+    <Filter Include="Component\Script\Contents\Item\Rope\Throw">
       <UniqueIdentifier>{4f43faee-db35-4460-b1cb-b60d814bc726}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Script\Item\Base">
+    <Filter Include="Component\Script\Contents\Item\Base">
       <UniqueIdentifier>{3bd3a589-c781-4e9a-852d-495b99a1f1af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Item\Bomb">
+      <UniqueIdentifier>{45fe5863-2767-43c5-b96f-56c60f7557b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\System">
+      <UniqueIdentifier>{bb966a04-68d1-48f4-809f-a7659e0e8b21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Trap">
+      <UniqueIdentifier>{da635c8c-f9d7-47b6-9a5e-5bc192f00184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Monster\Bat">
+      <UniqueIdentifier>{2223b11b-2e01-492f-a2ac-43309ea3bc8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Monster\Caveman">
+      <UniqueIdentifier>{739f702d-3226-4624-b02b-a2083ee39bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Monster\HornedLizard">
+      <UniqueIdentifier>{9edcfc12-0fdf-4e14-97f9-c2ffb9ce325a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Monster\Quillback">
+      <UniqueIdentifier>{d814dee3-89f1-46a4-b7d7-9c5fc4262e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Monster\Skeleton">
+      <UniqueIdentifier>{0d6972fe-df5c-4d3b-92c0-8cff1d94d0da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Monster\Snake">
+      <UniqueIdentifier>{ff9276ca-b9d9-4b42-b713-ead63fb10b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Monster\Spider">
+      <UniqueIdentifier>{0cf5e60a-942d-4e21-97ea-b16cdeab3af2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Contents\Monster\Merchant">
+      <UniqueIdentifier>{c7f301ab-d943-4f92-9d3a-fd54e05b6024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\CameraScript">
+      <UniqueIdentifier>{1e48342e-e4a3-4f7f-8f32-28ccab7fdd92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Script\Base">
+      <UniqueIdentifier>{b847ea40-514c-4c4e-ae97-f8c1fdb07a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Base">
+      <UniqueIdentifier>{e98db545-3360-421e-93ee-a7e12b4a0693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Light">
+      <UniqueIdentifier>{14f14b05-c68c-4c3d-a016-039a39b35e8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="yaApplication.cpp">
       <Filter>High Level Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="yaGraphicDevice_DX11.cpp">
-      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="yaMath.cpp">
       <Filter>Common\Math</Filter>
@@ -159,14 +222,8 @@
     <ClCompile Include="yaMesh.cpp">
       <Filter>Resource\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="yaShader.cpp">
-      <Filter>Resource\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="yaResources.cpp">
       <Filter>Resource\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="yaComponent.cpp">
-      <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="yaMaterial.cpp">
       <Filter>Resource\Material</Filter>
@@ -174,32 +231,20 @@
     <ClCompile Include="yaTexture.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="yaScript.cpp">
-      <Filter>Component\Script</Filter>
-    </ClCompile>
     <ClCompile Include="yaTransform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="yaMeshRenderer.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayerScript.cpp">
-      <Filter>Component\Script\Contents</Filter>
-    </ClCompile>
     <ClCompile Include="yaCamera.cpp">
       <Filter>Component\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="yaCameraScript.cpp">
-      <Filter>Component\Script</Filter>
     </ClCompile>
     <ClCompile Include="yaSpriteRenderer.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="yaBaseRenderer.cpp">
       <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="yaConstantBuffer.cpp">
-      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="yaGridScript.cpp">
       <Filter>Resource\Script</Filter>
@@ -234,9 +279,6 @@
     <ClCompile Include="yaCollider.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="yaPlayer.cpp">
-      <Filter>Component\Script\Contents</Filter>
-    </ClCompile>
     <ClCompile Include="yaCharacterSelectScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -264,60 +306,176 @@
     <ClCompile Include="yaUISpear.cpp">
       <Filter>Component\Script\Contents\UI</Filter>
     </ClCompile>
-    <ClCompile Include="yaBomb.cpp">
-      <Filter>Component\Script\Item</Filter>
-    </ClCompile>
     <ClCompile Include="yaWhip.cpp">
-      <Filter>Component\Script\Item\Whip</Filter>
+      <Filter>Component\Script\Contents\Item\Whip</Filter>
     </ClCompile>
     <ClCompile Include="yaWhipScript.cpp">
-      <Filter>Component\Script\Item\Whip</Filter>
-    </ClCompile>
-    <ClCompile Include="yaCaveman.cpp">
-      <Filter>Component\Script\Contents\Monster</Filter>
+      <Filter>Component\Script\Contents\Item\Whip</Filter>
     </ClCompile>
     <ClCompile Include="yaMonster.cpp">
       <Filter>Component\Script\Contents\Monster\Base</Filter>
     </ClCompile>
-    <ClCompile Include="yaColTransfer.cpp" />
-    <ClCompile Include="yaColTransferScript.cpp" />
     <ClCompile Include="yaShotgun.cpp">
-      <Filter>Component\Script\Item\ShotGun</Filter>
+      <Filter>Component\Script\Contents\Item\ShotGun</Filter>
     </ClCompile>
     <ClCompile Include="yaShotGunScript.cpp">
-      <Filter>Component\Script\Item\ShotGun</Filter>
+      <Filter>Component\Script\Contents\Item\ShotGun</Filter>
     </ClCompile>
     <ClCompile Include="yaBullet.cpp">
-      <Filter>Component\Script\Item\ShotGun\Bullet</Filter>
+      <Filter>Component\Script\Contents\Item\ShotGun\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="yaBulletScript.cpp">
-      <Filter>Component\Script\Item\ShotGun\Bullet</Filter>
+      <Filter>Component\Script\Contents\Item\ShotGun\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="yaEarnItemUI.cpp" />
     <ClCompile Include="yaRope.cpp">
-      <Filter>Component\Script\Item\Rope</Filter>
+      <Filter>Component\Script\Contents\Item\Rope</Filter>
     </ClCompile>
     <ClCompile Include="yaRopeScript.cpp">
-      <Filter>Component\Script\Item\Rope</Filter>
+      <Filter>Component\Script\Contents\Item\Rope</Filter>
     </ClCompile>
     <ClCompile Include="yaRopeThrow.cpp">
-      <Filter>Component\Script\Item\Rope\Throw</Filter>
+      <Filter>Component\Script\Contents\Item\Rope\Throw</Filter>
     </ClCompile>
     <ClCompile Include="yaRopeThrowScript.cpp">
-      <Filter>Component\Script\Item\Rope\Throw</Filter>
+      <Filter>Component\Script\Contents\Item\Rope\Throw</Filter>
     </ClCompile>
-    <ClCompile Include="yaRigidbody.cpp" />
-    <ClCompile Include="yaBombScript.cpp" />
     <ClCompile Include="yaItem.cpp">
-      <Filter>Component\Script\Item\Base</Filter>
+      <Filter>Component\Script\Contents\Item\Base</Filter>
     </ClCompile>
-    <ClCompile Include="yaArrows.cpp" />
-    <ClCompile Include="yaLight.cpp" />
-    <ClCompile Include="yaStructedBuffer.cpp" />
-    <ClCompile Include="yaStage.cpp" />
-    <ClCompile Include="yaDispenser.cpp" />
-    <ClCompile Include="yaDoor.cpp" />
-    <ClCompile Include="yaTotemTrap.cpp" />
+    <ClCompile Include="yaDoor.cpp">
+      <Filter>Component\Script\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="yaRigidbody.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBomb.cpp">
+      <Filter>Component\Script\Contents\Item\Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="yaComputeShader.cpp">
+      <Filter>Resource\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPaintShader.cpp">
+      <Filter>Resource\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="yaShader.cpp">
+      <Filter>Resource\Shader\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="yaParticleSystem.cpp" />
+    <ClCompile Include="yaParticleShader.cpp">
+      <Filter>Resource\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="yaStructedBuffer.cpp">
+      <Filter>Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="yaConstantBuffer.cpp">
+      <Filter>Graphics\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="yaGraphicDevice_DX11.cpp">
+      <Filter>Graphics\Api</Filter>
+    </ClCompile>
+    <ClCompile Include="yaFintParticleScript.cpp">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBombScript.cpp">
+      <Filter>Component\Script\Contents\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="yaArrows.cpp">
+      <Filter>Component\Script\Contents\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayer.cpp">
+      <Filter>Component\Script\Contents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaPlayerScript.cpp">
+      <Filter>Component\Script\Contents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBigExplodeParticleScript.cpp">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClCompile>
+    <ClCompile Include="yaGameHud.cpp">
+      <Filter>Component\Script\Contents\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSmallExplodeParticleScript.cpp">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBlock.cpp">
+      <Filter>Component\Script\Contents\System</Filter>
+    </ClCompile>
+    <ClCompile Include="yaDetector.cpp">
+      <Filter>Component\Script\Contents\System</Filter>
+    </ClCompile>
+    <ClCompile Include="yaInventory.cpp">
+      <Filter>Component\Script\Contents\System</Filter>
+    </ClCompile>
+    <ClCompile Include="yaStage.cpp">
+      <Filter>Component\Script\Contents\System</Filter>
+    </ClCompile>
+    <ClCompile Include="yaStore.cpp">
+      <Filter>Component\Script\Contents\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\44Engine\yaDebugObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\44Engine\yaEditorObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="yaDispenser.cpp">
+      <Filter>Component\Script\Contents\Trap</Filter>
+    </ClCompile>
+    <ClCompile Include="yaTotemTrap.cpp">
+      <Filter>Component\Script\Contents\Trap</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBat.cpp">
+      <Filter>Component\Script\Contents\Monster\Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="yaCaveman.cpp">
+      <Filter>Component\Script\Contents\Monster\Caveman</Filter>
+    </ClCompile>
+    <ClCompile Include="yaHornedLizard.cpp">
+      <Filter>Component\Script\Contents\Monster\HornedLizard</Filter>
+    </ClCompile>
+    <ClCompile Include="yaQuillback.cpp">
+      <Filter>Component\Script\Contents\Monster\Quillback</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSkeleton.cpp">
+      <Filter>Component\Script\Contents\Monster\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSnake.cpp">
+      <Filter>Component\Script\Contents\Monster\Snake</Filter>
+    </ClCompile>
+    <ClCompile Include="yaSpider.cpp">
+      <Filter>Component\Script\Contents\Monster\Spider</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMerchant.cpp">
+      <Filter>Component\Script\Contents\Monster\Merchant</Filter>
+    </ClCompile>
+    <ClCompile Include="yaCameraScript.cpp">
+      <Filter>Component\Script\CameraScript</Filter>
+    </ClCompile>
+    <ClCompile Include="yaScript.cpp">
+      <Filter>Component\Script\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="yaComponent.cpp">
+      <Filter>Component\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="yaLight.cpp">
+      <Filter>Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="yaMonsterManager.cpp" />
+    <ClCompile Include="yaExitDoor.cpp" />
+    <ClCompile Include="yaTreasure.cpp" />
+    <ClCompile Include="yaParticleManager.cpp">
+      <Filter>Component\Script\ParticleScript\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBloodParticle.cpp">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClCompile>
+    <ClCompile Include="yaBounceParticleSript.cpp">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClCompile>
+    <ClCompile Include="yaShotGunParticle.cpp">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClCompile>
+    <ClCompile Include="yaStageResult.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonInclude.h">
@@ -325,9 +483,6 @@
     </ClInclude>
     <ClInclude Include="yaApplication.h">
       <Filter>High Level Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="yaGraphicDevice_DX11.h">
-      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaMath.h">
       <Filter>Common\Math</Filter>
@@ -362,14 +517,8 @@
     <ClInclude Include="yaMesh.h">
       <Filter>Resource\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="yaShader.h">
-      <Filter>Resource\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="yaResources.h">
       <Filter>Resource\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="yaComponent.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="yaMaterial.h">
       <Filter>Resource\Material</Filter>
@@ -377,23 +526,14 @@
     <ClInclude Include="yaTexture.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="yaScript.h">
-      <Filter>Component\Script</Filter>
-    </ClInclude>
     <ClInclude Include="yaTransform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="yaMeshRenderer.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="yaPlayerScript.h">
-      <Filter>Component\Script\Contents</Filter>
-    </ClInclude>
     <ClInclude Include="yaCamera.h">
       <Filter>Component\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="yaCameraScript.h">
-      <Filter>Component\Script</Filter>
     </ClInclude>
     <ClInclude Include="yaSpriteRenderer.h">
       <Filter>Component\Renderer</Filter>
@@ -403,9 +543,6 @@
     </ClInclude>
     <ClInclude Include="yaBaseRenderer.h">
       <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="yaConstantBuffer.h">
-      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="yaGridScript.h">
       <Filter>Resource\Script</Filter>
@@ -440,9 +577,6 @@
     <ClInclude Include="yaCollider.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="yaPlayer.h">
-      <Filter>Component\Script\Contents</Filter>
-    </ClInclude>
     <ClInclude Include="yaCharacterSelectScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -470,60 +604,177 @@
     <ClInclude Include="yaArrow.h">
       <Filter>Component\Script\Contents\UI</Filter>
     </ClInclude>
-    <ClInclude Include="yaBomb.h">
-      <Filter>Component\Script\Item</Filter>
-    </ClInclude>
     <ClInclude Include="yaWhip.h">
-      <Filter>Component\Script\Item\Whip</Filter>
+      <Filter>Component\Script\Contents\Item\Whip</Filter>
     </ClInclude>
     <ClInclude Include="yaWhipScript.h">
-      <Filter>Component\Script\Item\Whip</Filter>
-    </ClInclude>
-    <ClInclude Include="yaCaveman.h">
-      <Filter>Component\Script\Contents\Monster</Filter>
+      <Filter>Component\Script\Contents\Item\Whip</Filter>
     </ClInclude>
     <ClInclude Include="yaMonster.h">
       <Filter>Component\Script\Contents\Monster\Base</Filter>
     </ClInclude>
-    <ClInclude Include="yaColTransfer.h" />
-    <ClInclude Include="yaColTransferScript.h" />
     <ClInclude Include="yaShotgun.h">
-      <Filter>Component\Script\Item\ShotGun</Filter>
+      <Filter>Component\Script\Contents\Item\ShotGun</Filter>
     </ClInclude>
     <ClInclude Include="yaShotGunScript.h">
-      <Filter>Component\Script\Item\ShotGun</Filter>
+      <Filter>Component\Script\Contents\Item\ShotGun</Filter>
     </ClInclude>
     <ClInclude Include="yaBulletScript.h">
-      <Filter>Component\Script\Item\ShotGun\Bullet</Filter>
+      <Filter>Component\Script\Contents\Item\ShotGun\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="yaBullet.h">
-      <Filter>Component\Script\Item\ShotGun\Bullet</Filter>
+      <Filter>Component\Script\Contents\Item\ShotGun\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="yaEarnItemUI.h" />
     <ClInclude Include="yaRopeScript.h">
-      <Filter>Component\Script\Item\Rope</Filter>
+      <Filter>Component\Script\Contents\Item\Rope</Filter>
     </ClInclude>
     <ClInclude Include="yaRope.h">
-      <Filter>Component\Script\Item\Rope</Filter>
+      <Filter>Component\Script\Contents\Item\Rope</Filter>
     </ClInclude>
     <ClInclude Include="yaRopeThrowScript.h">
-      <Filter>Component\Script\Item\Rope\Throw</Filter>
+      <Filter>Component\Script\Contents\Item\Rope\Throw</Filter>
     </ClInclude>
     <ClInclude Include="yaRopeThrow.h">
-      <Filter>Component\Script\Item\Rope\Throw</Filter>
+      <Filter>Component\Script\Contents\Item\Rope\Throw</Filter>
     </ClInclude>
-    <ClInclude Include="yaRigidbody.h" />
-    <ClInclude Include="yaBombScript.h" />
     <ClInclude Include="yaItem.h">
-      <Filter>Component\Script\Item\Base</Filter>
+      <Filter>Component\Script\Contents\Item\Base</Filter>
     </ClInclude>
-    <ClInclude Include="yaArrows.h" />
-    <ClInclude Include="yaLight.h" />
-    <ClInclude Include="yaStructedBuffer.h" />
-    <ClInclude Include="yaStage.h" />
-    <ClInclude Include="yaDispenser.h" />
-    <ClInclude Include="yaDoor.h" />
-    <ClInclude Include="yaTotemTrap.h" />
+    <ClInclude Include="yaDoor.h">
+      <Filter>Component\Script\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="yaRigidbody.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBomb.h">
+      <Filter>Component\Script\Contents\Item\Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="yaComputeShader.h">
+      <Filter>Resource\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPaintShader.h">
+      <Filter>Resource\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="yaShader.h">
+      <Filter>Resource\Shader\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="yaParticleSystem.h" />
+    <ClInclude Include="yaParticleShader.h">
+      <Filter>Resource\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="yaStructedBuffer.h">
+      <Filter>Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="yaConstantBuffer.h">
+      <Filter>Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="yaGraphicDevice_DX11.h">
+      <Filter>Graphics\Api</Filter>
+    </ClInclude>
+    <ClInclude Include="yaFintParticleScript.h">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBombScript.h">
+      <Filter>Component\Script\Contents\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="yaArrows.h">
+      <Filter>Component\Script\Contents\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerScript.h">
+      <Filter>Component\Script\Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayer.h">
+      <Filter>Component\Script\Contents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBigExplodeParticleScript.h">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClInclude>
+    <ClInclude Include="yaGameHud.h">
+      <Filter>Component\Script\Contents\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSmallExplodeParticleScript.h">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBlock.h">
+      <Filter>Component\Script\Contents\System</Filter>
+    </ClInclude>
+    <ClInclude Include="yaDetector.h">
+      <Filter>Component\Script\Contents\System</Filter>
+    </ClInclude>
+    <ClInclude Include="yaInventory.h">
+      <Filter>Component\Script\Contents\System</Filter>
+    </ClInclude>
+    <ClInclude Include="yaStage.h">
+      <Filter>Component\Script\Contents\System</Filter>
+    </ClInclude>
+    <ClInclude Include="yaStore.h">
+      <Filter>Component\Script\Contents\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\44Engine\yaEditorObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\44Engine\yaDebugObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="yaDispenser.h">
+      <Filter>Component\Script\Contents\Trap</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTotemTrap.h">
+      <Filter>Component\Script\Contents\Trap</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBat.h">
+      <Filter>Component\Script\Contents\Monster\Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="yaCaveman.h">
+      <Filter>Component\Script\Contents\Monster\Caveman</Filter>
+    </ClInclude>
+    <ClInclude Include="yaHornedLizard.h">
+      <Filter>Component\Script\Contents\Monster\HornedLizard</Filter>
+    </ClInclude>
+    <ClInclude Include="yaQuillback.h">
+      <Filter>Component\Script\Contents\Monster\Quillback</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSkeleton.h">
+      <Filter>Component\Script\Contents\Monster\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSnake.h">
+      <Filter>Component\Script\Contents\Monster\Snake</Filter>
+    </ClInclude>
+    <ClInclude Include="yaSpider.h">
+      <Filter>Component\Script\Contents\Monster\Spider</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMerchant.h">
+      <Filter>Component\Script\Contents\Monster\Merchant</Filter>
+    </ClInclude>
+    <ClInclude Include="yaCameraScript.h">
+      <Filter>Component\Script\CameraScript</Filter>
+    </ClInclude>
+    <ClInclude Include="yaScript.h">
+      <Filter>Component\Script\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="yaComponent.h">
+      <Filter>Component\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="yaLight.h">
+      <Filter>Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="yaMonsterManager.h" />
+    <ClInclude Include="yaExitDoor.h" />
+    <ClInclude Include="yaTreasure.h" />
+    <ClInclude Include="yaParticleManager.h">
+      <Filter>Component\Script\ParticleScript\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBounceParticleSript.h">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBloodParticle.h">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBlockDestroyParticle.h" />
+    <ClInclude Include="yaShotGunParticle.h">
+      <Filter>Component\Script\ParticleScript</Filter>
+    </ClInclude>
+    <ClInclude Include="yaStageResult.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="yaMath.inl">

@@ -42,9 +42,14 @@ namespace ya
 
 		// 회전 변환 행렬
 		Matrix rotation;
-		rotation = Matrix::CreateRotationX(mRotation.x);
-		rotation *= Matrix::CreateRotationY(mRotation.y);
-		rotation *= Matrix::CreateRotationZ(mRotation.z);
+		Vector3 radian(mRotation.x * (XM_PI / 180)
+			, mRotation.y * (XM_PI / 180)
+			, mRotation.z * (XM_PI / 180));
+
+		rotation = Matrix::CreateRotationX(radian.x);
+		rotation *= Matrix::CreateRotationY(radian.y);
+		rotation *= Matrix::CreateRotationZ(radian.z);
+
 
 		// 이동 변환 행렬
 		Matrix position;
@@ -78,7 +83,12 @@ namespace ya
 		trCb.projection = Camera::GetGpuProjectionMatrix();
 
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Transform];
-		cb->Bind(&trCb);
-		cb->SetPipline(eShaderStage::VS);
+		cb->SetData(&trCb);
+		cb->Bind(eShaderStage::VS);
+		cb->Bind(eShaderStage::HS);
+		cb->Bind(eShaderStage::DS);
+		cb->Bind(eShaderStage::GS);
+		cb->Bind(eShaderStage::PS);
+		cb->Bind(eShaderStage::CS);
 	}
 }

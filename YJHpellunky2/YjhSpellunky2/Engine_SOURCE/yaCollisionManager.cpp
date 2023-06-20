@@ -52,6 +52,10 @@ namespace ya
 
 		mLayerCollisionMatrix[row][column] = enable;
 	}
+
+
+
+
 	void CollisionManager::LayerCollision(Scene* scene, eLayerType left, eLayerType right)
 	{
 		const::std::vector<GameObject*>& lefts = scene->GetGameObjects(left);
@@ -59,11 +63,6 @@ namespace ya
 
 		for (GameObject* left :lefts)
 		{
-			if (left->GetLayerType() == eLayerType::Ground)
-			{
-
-				int a;
-			}
 			if (left->GetState() != GameObject::Active)
 				continue;
 			if (left->GetComponent<Collider2D>() == nullptr)
@@ -85,7 +84,6 @@ namespace ya
 	}
 	void CollisionManager::ColliderCollision(Collider2D* left, Collider2D* right)
 	{
-		
 
 		// 두 충돌체 레이어로 구성된 id 확인
 		ColliderID colliderID;
@@ -127,8 +125,6 @@ namespace ya
 					left->OnTriggerStay(right);
 				else
 					left->OnCollisionStay(right);
-
-
 				if (right->IsTrigger())
 					right->OnTriggerStay(left);
 				else
@@ -145,11 +141,12 @@ namespace ya
 				else
 					left->OnCollisionExit(right);
 
-
 				if (right->IsTrigger())
 					right->OnTriggerExit(left);
 				else
+				{
 					right->OnCollisionExit(left);
+				}
 
 				iter->second = false;
 			}
@@ -183,6 +180,8 @@ namespace ya
 			
 		// 분리축 벡터 4개 구하기
 		Vector3 Axis[4] = {};
+
+
 		Vector3 leftScale = Vector3(left->GetSize().x, left->GetSize().y, 1.0f);
 
 		Matrix finalLeft = Matrix::CreateScale(leftScale);
@@ -201,8 +200,6 @@ namespace ya
 		Axis[1] -= Vector3::Transform(arrLocalPos[0], finalLeft);
 		Axis[2] -= Vector3::Transform(arrLocalPos[0], finalRight);
 		Axis[3] -= Vector3::Transform(arrLocalPos[0], finalRight);
-
-
 
 		for (size_t i = 0; i < 4; i++)
 			Axis[i].z = 0.0f;

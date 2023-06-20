@@ -9,6 +9,10 @@
 #include "yaWhipScript.h"
 #include "yaShotGunScript.h"
 #include "yaRopeThrowScript.h"
+#include "yaResources.h"
+#include "yaObject.h"
+#include "yaSceneManager.h"
+#include "yaDetector.h"
 
 namespace ya
 {
@@ -16,7 +20,7 @@ namespace ya
 		: Script(),
 		camera_obj(nullptr),
 		isGround(false),
-		max_jump_time(0.25f),
+		max_jump_time(0.15f),
 		jump_count(1),
 		pressing_timer(0.0f),
 		mState(Fall),
@@ -24,7 +28,9 @@ namespace ya
 		isInterctWeapon(false),
 		isHas_front_equip(false),
 		isCtrlAble(true),
-		isInivisible(false)
+		isInivisible(false),
+		touch_ground_amount(0),
+		falling_limit(-9)
 	{
 	}
 
@@ -34,42 +40,161 @@ namespace ya
 
 	void PlayerScript::Initialize()
 	{
-		Animator* animator = GetOwner()->GetComponent<Animator>();
-		animator->GetStartEvent(L"Idle");
+		transform = GetOwner()->GetComponent<Transform>();
+		animator = GetOwner()->AddComponent<Animator>();
+		curr_scene = SceneManager::GetPlayScene();
 
-		animator->GetCompleteEvent(L"LeftAttack") = std::bind(&PlayerScript::AttackEnd, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
-		animator->GetCompleteEvent(L"LeftGetUP") = std::bind(&PlayerScript::LeftGetUpEnd, this);
-		animator->GetCompleteEvent(L"RightGetUP") = std::bind(&PlayerScript::RightGetUpEnd, this);
+#pragma region  "플레이어 머리"
+		{
+			head = object::Instantiate<GameObject>(eLayerType::Head, curr_scene);
+			head->SetLayerType(eLayerType::Head);
+			head->SetName(L"Head");
+			Transform* head_tr = head->GetComponent<Transform>();
+			head_tr->SetScale(Vector3::One);
+			Detector* headScript = head->AddComponent<Detector>();
+			headScript->SetSender(this);
+			Collider2D* head_col = head->AddComponent<Collider2D>();
+			head_col->SetName(L"HeadCollider");
+			head_col->SetType(eColliderType::Rect);
+			head_col->SetSize(Vector2(0.4f, 0.2f));
+		}
+#pragma endregion
+		
+#pragma region "플레이어 몸체"
+		{
+			body = object::Instantiate<GameObject>(eLayerType::Body, curr_scene);
+			body->SetLayerType(eLayerType::Body);
+			body->SetName(L"Body");
+			Transform* body_tr = body->GetComponent<Transform>();
+			body_tr->SetScale(Vector3::One);
+			Detector* bodyScript = body->AddComponent<Detector>();
+			bodyScript->SetSender(this);
+			Collider2D* body_col = body->AddComponent<Collider2D>();
+			body_col->SetName(L"BodyCollider");
+			body_col->SetType(eColliderType::Rect);
+			body_col->SetSize(Vector2(0.5f, 0.5f));
+		}
+#pragma endregion
+
+#pragma region "플레이어 발"
+		{
+			feet = object::Instantiate<GameObject>(eLayerType::Feet, curr_scene);
+			feet->SetLayerType(eLayerType::Feet);
+			feet->SetName(L"Feet");
+			Transform* feet_tr = feet->GetComponent<Transform>();
+			feet_tr->SetScale(Vector3::One);
+			Detector* feetScript = feet->AddComponent<Detector>();
+			feetScript->SetSender(this);
+			Collider2D* feet_col = feet->AddComponent<Collider2D>();
+			feet_col->SetName(L"FeetCollider");
+			feet_col->SetType(eColliderType::Rect);
+			feet_col->SetSize(Vector2(0.55f, 0.1f));
+		}
+#pragma endregion
+
+		SetAnimation();
 	}
 
 	void PlayerScript::Update()
 	{
-
-		Animator* animator = GetOwner()->GetComponent<Animator>();
-
-		if (feet != nullptr)
+		if (!isDead)
 		{
-			Vector3 curr_pos = GetOwner()->GetComponent<Transform>()->GetPosition();
-			feet->GetComponent<Transform>()->SetPosition(Vector3(curr_pos.x, curr_pos.y - 0.4f, curr_pos.z));
-		}	
-		if (head != nullptr)
-		{
-			Vector3 curr_pos = GetOwner()->GetComponent<Transform>()->GetPosition();
-			head->GetComponent<Transform>()->SetPosition(Vector3(curr_pos.x, curr_pos.y + 0.4f, curr_pos.z));
+			InputCtrl();
+
+			if (touch_ground_amount == 0)
+			{
+				isGround = false;
+				if (mState == Fall)
+				{
+					Vector3 mPos = transform->GetPosition();
+					Vector3 fixed_pos = Vector3(mPos.x, mPos.y + falling_speed * Time::DeltaTime(), mPos.z);
+					if (falling_speed > falling_limit)
+					{
+						falling_speed -= Time::DeltaTime() * 18;
+					}
+					else
+					{
+						falling_speed = falling_limit;
+					}
+
+
+					transform->SetPosition(fixed_pos);
+				}
+			}
+			else
+			{
+				falling_speed = 0.0f;
+				isGround = true;
+				if (mState == Fall)
+				{
+					mState = Idle;
+				}
+			}
 		}
-		if (left_body != nullptr)
-		{
-			Vector3 curr_pos = GetOwner()->GetComponent<Transform>()->GetPosition();
-			left_body->GetComponent<Transform>()->SetPosition(Vector3(curr_pos.x - 0.2, curr_pos.y, curr_pos.z));
-		}
-		if (right_body != nullptr)
-		{
-			Vector3 curr_pos = GetOwner()->GetComponent<Transform>()->GetPosition();
-			right_body->GetComponent<Transform>()->SetPosition(Vector3(curr_pos.x + 0.2, curr_pos.y, curr_pos.z));
-		}
 
 
+#pragma region "sadsa"
 
+
+		//	if(isHas_front_equip)
+		//	if (front_equip != nullptr)
+		//	{
+		//		Transform* tr = GetOwner()->GetComponent<Transform>();
+		//		ShotGunScript* shotgun = front_equip->GetScript<ShotGunScript>();
+		//		Rigidbody* rb = front_equip->GetComponent<Rigidbody>();
+		//		rb->GravityOff();
+		//		if (direction == LeftAhead)
+		//		{
+		//			front_equip->GetComponent<Transform>()->SetPosition(Vector3(tr->GetPosition().x - 0.2f, tr->GetPosition().y - 0.25f, tr->GetPosition().z));
+		//			if (mState == Crouch || mState == Crawl)
+		//			{
+		//				front_equip->GetComponent<Transform>()->SetPosition(Vector3(tr->GetPosition().x - 0.2f, tr->GetPosition().y - 0.35f, tr->GetPosition().z));
+		//			}
+		//			if (front_equip->GetLayerType() == eLayerType::ShotGun)
+		//			{
+		//				shotgun->TurnLeft();
+		//			}
+		//		}
+		//		else
+		//		{
+		//			front_equip->GetComponent<Transform>()->SetPosition(Vector3(tr->GetPosition().x + 0.2f, tr->GetPosition().y - 0.25f, tr->GetPosition().z));
+		//			if (mState == Crouch || mState == Crawl)
+		//			{
+		//				front_equip->GetComponent<Transform>()->SetPosition(Vector3(tr->GetPosition().x + 0.2f, tr->GetPosition().y - 0.35f, tr->GetPosition().z));
+		//			}
+		//			if (front_equip->GetLayerType() == eLayerType::ShotGun)
+		//			{
+		//				shotgun->TurnRight();
+		//			}
+		//		}
+		//	}
+		//}
+		//if (Input::GetKeyState(eKeyCode::O) == eKeyState::DOWN)
+		//{
+		//	LifeDown();
+		//}
+
+
+		//if (Input::GetKeyState(eKeyCode::P) == eKeyState::DOWN)
+		//{
+		//	Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
+		//	rb->KnockbackOn(Vector2(2,3));
+		//	mState = Knockback;
+		//	isCtrlAble = false;
+		//	isInivisible = true;
+		//	animator->Play(L"LeftJump", false);
+		//}
+		//if (isCtrlAble)
+		//{
+		//	InputCtrl();
+		//}
+		////prev_pos = transform->GetPosition();
+#pragma endregion
+
+	}
+
+	void PlayerScript::FixedUpdate()
+	{
 		if (!isDead)
 		{
 			if (camera_obj != nullptr)
@@ -79,70 +204,83 @@ namespace ya
 					Vector3 cam_pos = camera_obj->GetComponent<Transform>()->GetPosition();
 					Vector3 player_pos = this->GetOwner()->GetComponent<Transform>()->GetPosition();
 
-					Vector3 fixed_cam_pos = Vector3(player_pos.x, player_pos.y, player_pos.z - 1.0f);
+					Vector3 fixed_cam_pos = Vector3(player_pos.x, player_pos.y, player_pos.z - 5.0f);
 
 					camera_obj->GetComponent<Transform>()->SetPosition(fixed_cam_pos);
 				}
 			}
-			if(isHas_front_equip)
-			if (front_equip != nullptr)
-			{
-				Transform* tr = GetOwner()->GetComponent<Transform>();
-				ShotGunScript* shotgun = front_equip->GetScript<ShotGunScript>();
-				Rigidbody* rb = front_equip->GetComponent<Rigidbody>();
-				rb->GravityOff();
-				if (direction == LeftAhead)
-				{
-					front_equip->GetComponent<Transform>()->SetPosition(Vector3(tr->GetPosition().x - 0.2f, tr->GetPosition().y - 0.25f, tr->GetPosition().z));
-					if (mState == Crouch || mState == Crawl)
-					{
-						front_equip->GetComponent<Transform>()->SetPosition(Vector3(tr->GetPosition().x - 0.2f, tr->GetPosition().y - 0.35f, tr->GetPosition().z));
-					}
-					if (front_equip->GetLayerType() == eLayerType::ShotGun)
-					{
-						shotgun->TurnLeft();
-					}
-				}
-				else
-				{
-					front_equip->GetComponent<Transform>()->SetPosition(Vector3(tr->GetPosition().x + 0.2f, tr->GetPosition().y - 0.25f, tr->GetPosition().z));
-					if (mState == Crouch || mState == Crawl)
-					{
-						front_equip->GetComponent<Transform>()->SetPosition(Vector3(tr->GetPosition().x + 0.2f, tr->GetPosition().y - 0.35f, tr->GetPosition().z));
-					}
-					if (front_equip->GetLayerType() == eLayerType::ShotGun)
-					{
-						shotgun->TurnRight();
-					}
-				}
-			}
 		}
 
-		if (Input::GetKeyState(eKeyCode::P) == eKeyState::DOWN)
-		{
-			Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
-			rb->KnockbackOn(Vector2(2,3));
-			mState = Knockback;
-			isCtrlAble = false;
-			isInivisible = true;
-			GetOwner()->GetComponent<Animator>()->Play(L"LeftJump", false);
-		}
-		if (isCtrlAble)
-		{
-			InputCtrl();
-		}
+
+#pragma region "각 부위 콜라이더 동기화"
+		Transform* head_tr = head->GetComponent<Transform>();
+		Transform* body_tr = body->GetComponent<Transform>();
+		Transform* feet_tr = feet->GetComponent<Transform>();
+		Transform* owner_pos = GetOwner()->GetComponent<Transform>();
+
+		head_tr->SetPosition(Vector3(owner_pos->GetPosition().x, owner_pos->GetPosition().y + 0.2f, owner_pos->GetPosition().z));
+		body_tr->SetPosition(Vector3(owner_pos->GetPosition().x, owner_pos->GetPosition().y - 0.15f, owner_pos->GetPosition().z));
+		feet_tr->SetPosition(Vector3(owner_pos->GetPosition().x, owner_pos->GetPosition().y-0.45f, owner_pos->GetPosition().z));
+
+
+#pragma endregion
+	}
+
+
+	void PlayerScript::SetAnimation()
+	{
+		std::shared_ptr<Texture> texture_L = Resources::Load<Texture>(L"LPlayer", L"char_yellowL.png");
+		std::shared_ptr<Texture> texture_R = Resources::Load<Texture>(L"RPlayer", L"char_yellowR.png");
+
+		animator->Create(L"LeftIdle", texture_L, Vector2(1920.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, true);
+		animator->Create(L"RightIdle",  texture_R, Vector2(0.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+
+		animator->Create(L"LeftMove", texture_L, Vector2(896.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 8, 0.05f, true);
+		animator->Create(L"RightMove", texture_R, Vector2(128.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 8, 0.05f, false);
+
+		animator->Create(L"LeftAttack", texture_L, Vector2(1280.0f, 512.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 6, 0.05f, true);
+		animator->Create(L"RightAttack", texture_R, Vector2(0.0f, 512.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 6, 0.05f, false);
+
+		animator->Create(L"LeftLookUp", texture_L, Vector2(1536.0f, 1024.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 4, 0.05f, true);
+		animator->Create(L"RightLookUp", texture_R, Vector2(0.0f, 1024.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 4, 0.05f, false);
+
+		animator->Create(L"LeftCrouchEnd", texture_L, Vector2(1664.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, true);
+		animator->Create(L"RightCrouchEnd", texture_R, Vector2(256.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+
+		animator->Create(L"LeftCrouch", texture_L, Vector2(128 * 13, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, true);
+		animator->Create(L"RightCrouch", texture_R, Vector2(0.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, false);
+
+		animator->Create(L"LeftCrawl", texture_L, Vector2(512.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 7, 0.05f, true);
+		animator->Create(L"RightCrawl", texture_R, Vector2(630.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 7, 0.05f, false);
+
+		animator->Create(L"LeftGetUP", texture_L, Vector2(128 * 13, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, false);
+		animator->Create(L"RightGetUP", texture_R, Vector2(256.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, false);
+
+		animator->Create(L"LeftJump", texture_L, Vector2(1408, 1152.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 5, 0.05f, true);
+		animator->Create(L"RightJump", texture_R, Vector2(0.0f, 1152.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 5, 0.05f, false);
+
+		animator->Create(L"LeftFall", texture_L, Vector2(1664.0f, 1280.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, true);
+		animator->Create(L"RightFall", texture_R, Vector2(256.0f, 1280.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, false);
+
+		animator->Create(L"HangOnRope", texture_R, Vector2(0.0f, 128.0f * 7), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+		animator->Create(L"GoUpRope", texture_R, Vector2(0.0f, 128.0f * 7), Vector2(128.0f, 128.0f), Vector2::Zero, 10, 0.05f, false);
+		animator->Create(L"GoDownRope", texture_R, Vector2(0.0f, 128.0f * 7), Vector2(128.0f, 128.0f), Vector2::Zero, 10, 0.05f, true);
+
+		animator->Create(L"LeftDead", texture_L, Vector2(128.0f * 14, 128.0f * 2), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, true);
+		animator->Create(L"RightDead", texture_R, Vector2(128.0f * 1, 128.0f * 2), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+		animator->Create(L"LeftGroundDead", texture_L, Vector2(128.0f * 6, 128.0f * 0), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, true);
+		animator->Create(L"RightGroundDead", texture_R, Vector2(128.0f * 9, 128.0f * 0), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+		animator->Play(L"RightIdle", true);
+
+		animator->GetStartEvent(L"Idle");
+		animator->GetCompleteEvent(L"LeftAttack") = std::bind(&PlayerScript::AttackEnd, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
+		animator->GetCompleteEvent(L"LeftGetUP") = std::bind(&PlayerScript::LeftGetUpEnd, this);
+		animator->GetCompleteEvent(L"RightGetUP") = std::bind(&PlayerScript::RightGetUpEnd, this);
 	}
 
 	void PlayerScript::InputCtrl()
 	{
-
-		Animator* animator = GetOwner()->GetComponent<Animator>();
-
-		if (isDead)
-		{
-			return;
-		}
-
+#pragma region  "Input"
 
 		if (Input::GetKeyState(eKeyCode::LEFT) == eKeyState::DOWN)
 		{
@@ -232,10 +370,12 @@ namespace ya
 					move_speed = -6.0f;
 				}
 
-			Transform* tr = GetOwner()->GetComponent<Transform>();
-			Vector3 pos = tr->GetPosition();
-			pos.x += move_speed * Time::DeltaTime();
-			tr->SetPosition(pos);
+				if (touch_right_wall_amount == 0)
+				{
+					Vector3 pos = transform->GetPosition();
+					pos.x += move_speed * Time::DeltaTime();
+					transform->SetPosition(pos);
+				}
 			}
 
 			//움직이지 못하는 특정 ㄴㄴ이 아닐 경우
@@ -354,10 +494,12 @@ namespace ya
 				{
 					move_speed = 6.0f;
 				}
-				Transform* tr = GetOwner()->GetComponent<Transform>();
-				Vector3 pos = tr->GetPosition();
-				pos.x += move_speed * Time::DeltaTime();
-				tr->SetPosition(pos);
+				if (touch_left_wall_amount == 0)
+				{
+					Vector3 pos = transform->GetPosition();
+					pos.x += move_speed * Time::DeltaTime();
+					transform->SetPosition(pos);
+				}
 			}
 		}
 		if (Input::GetKeyState(eKeyCode::RIGHT) == eKeyState::UP)
@@ -474,15 +616,14 @@ namespace ya
 					mState = Fall;
 					if (!GetOwner()->GetComponent<Rigidbody>()->GetIsGravity())
 					{
-						GetOwner()->GetComponent<Rigidbody>()->GravityOn();
+						//GetOwner()->GetComponent<Rigidbody>()->GravityOn();
 					}
 				}
 				else
 				{
-					Transform* tr = GetOwner()->GetComponent<Transform>();
-					Vector3 pos = tr->GetPosition();
+					Vector3 pos = transform->GetPosition();
 					Vector3 fixed_pos = Vector3(pos.x, pos.y -= 5.0f * Time::DeltaTime(), pos.z);
-					tr->SetPosition(fixed_pos);
+					transform->SetPosition(fixed_pos);
 					if (GetOwner()->GetComponent<Animator>()->IsComplete())
 					{
 						GetOwner()->GetComponent<Animator>()->Play(L"GoUpRope", false);
@@ -493,7 +634,7 @@ namespace ya
 					}
 
 				}
-				break;
+				break;	
 			case ya::PlayerScript::StandAtack:
 				break;
 			default:
@@ -540,6 +681,15 @@ namespace ya
 			}
 		}
 
+
+		if (Input::GetKeyState(eKeyCode::A) == eKeyState::DOWN)
+		{
+			if (isExitDoor)
+			{
+				stage->NextStage();
+			}
+		}
+
 		if (Input::GetKeyState(eKeyCode::UP) == eKeyState::DOWN)
 		{
 			//만약 로프가 있다면
@@ -583,10 +733,9 @@ namespace ya
 					GetOwner()->GetComponent<Animator>()->Play(L"GoUpRope",false);
 				}
 
-				Transform* tr = GetOwner()->GetComponent<Transform>();
-				Vector3 pos = tr->GetPosition();
+				Vector3 pos = transform->GetPosition();
 				Vector3 fixed_pos = Vector3(pos.x, pos.y += 5.0f * Time::DeltaTime(), pos.z);
-				tr->SetPosition(fixed_pos);
+				transform->SetPosition(fixed_pos);
 			}
 		}
 		if (Input::GetKeyState(eKeyCode::UP) == eKeyState::UP)
@@ -610,7 +759,7 @@ namespace ya
 			}
 		}
 
-		if (jump_count >= 1 || mState == RidingRope)
+		if (isGround )
 		{
 			if (Input::GetKeyState(eKeyCode::Z) == eKeyState::DOWN)
 			{
@@ -622,7 +771,6 @@ namespace ya
 				{
 					animator->Play(L"RightJump", false);
 				}
-				jump_count--;
 				mState = Jump;
 			}
 		}
@@ -630,18 +778,24 @@ namespace ya
 		{
 			if (mState == Jump)
 			{
-				Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
-
 				jump_timer += Time::DeltaTime();
-				rb->AddForce(Vector2(0.0f, 10.0f));
 
+				Vector3 mPos = transform->GetPosition();
+				Vector3 fixed_pos = Vector3(mPos.x, mPos.y + 9 * Time::DeltaTime(), mPos.z);
+				transform->SetPosition(fixed_pos);
+				
 				if (jump_timer >= max_jump_time)
 				{
 					jump_timer = 0;
-					rb->Reset();
-					rb->GravityOn();
 					mState = Fall;
 				}
+
+				if (touch_ceiling_amount > 0)
+				{
+					jump_timer = 0;
+					mState = Fall;
+				}
+
 			}
 		}
 		if (Input::GetKeyState(eKeyCode::Z) == eKeyState::UP)
@@ -650,7 +804,7 @@ namespace ya
 			{
 				jump_timer = 0;
 				GetOwner()->GetComponent<Rigidbody>()->Reset();
-				GetOwner()->GetComponent<Rigidbody>()->GravityOn();
+				//GetOwner()->GetComponent<Rigidbody>()->GravityOn();
 				mState = Fall;
 			}
 		}
@@ -690,7 +844,7 @@ namespace ya
 				if (mState == Crawl || mState == Crouch)
 				{
 					Rigidbody* rb = front_equip->GetComponent<Rigidbody>();
-					rb->GravityOn();
+					//rb->GravityOn();
 					isHas_front_equip = false;
 					front_equip = nullptr;
 				}
@@ -709,6 +863,8 @@ namespace ya
 			RopeThrowScript* throw_script = GetOwner()->GetScript<RopeThrowScript>();
 			throw_script->Throw(GetOwner()->GetComponent<Transform>()->GetPosition());
 		}
+#pragma endregion
+
 	}
 
 	void PlayerScript::ThrowBomb()
@@ -745,7 +901,7 @@ namespace ya
 	void PlayerScript::CameraMove()
 	{
 		Vector3 camera_pos = camera_obj->GetComponent<Transform>()->GetPosition();
-		Vector3 player_pos = GetOwner()->GetComponent<Transform>()->GetPosition();
+		Vector3 player_pos = transform->GetPosition();
 
 		if (camera_pos.y < player_pos.y + 3.0f)
 		{
@@ -776,7 +932,6 @@ namespace ya
 		front_equip = nullptr;
 	}
 
-
 	void PlayerScript::Render()
 	{
 
@@ -789,243 +944,122 @@ namespace ya
 
 	void PlayerScript::OnCollisionEnter(Collider2D* col)
 	{
-		
 	}
 
-	void PlayerScript::OnCollisionStay(Collider2D* collider)
+	void PlayerScript::OnCollisionStay(Collider2D* col)
 	{
+		//1. 위에서 아래로 낙하 
 	}
  
 	void PlayerScript::OnCollisionExit(Collider2D* col)
 	{
-		
 	}
 
 	void PlayerScript::OnTriggerEnter(Collider2D* collider)
 	{
 
 	}
-	void PlayerScript::ReciveColEnter(eLayerType receive_layer, Collider2D* col)
+
+	void PlayerScript::ChildOnCollisionEnter(Collider2D* sender, Collider2D* col)
 	{
-		if (receive_layer == eLayerType::Feet)
+		if (sender->GetName() == L"FeetCollider")
 		{
-			if (col->GetOwner()->GetLayerType() == eLayerType::Ground)
+			if (col->GetName() == L"GroundCollider")
 			{
-				if (mState == Knockback)
-				{
-					Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
-					if (!rb->GetIsKnockback())
-					{
-						isInivisible = false;
-						isCtrlAble = true;
-					}
-				}
-				if (mState == Fall)
-				{
-					if (direction == LeftAhead)
-					{
-						Animator* animator = GetOwner()->GetComponent<Animator>();
-						animator->Play(L"LeftIdle", false);
-					}
-					else
-					{
-						Animator* animator = GetOwner()->GetComponent<Animator>();
-						animator->Play(L"RightIdle", false);
-					}
-				}
 				jump_count = 1;
-				if (mState != Die)
-				{
-					mState = Idle;
-					if (direction == LeftAhead)
-					{
-						GetOwner()->GetComponent<Animator>()->Play(L"LeftIdle", false);
-					}
-					else
-					{
-						GetOwner()->GetComponent<Animator>()->Play(L"RightIdle", false);
-					}
-				}
-				else
-				{
-					if (direction == LeftAhead)
-					{
-						GetOwner()->GetComponent<Animator>()->Play(L"LeftGroundDead", false);
-
-					}
-					else
-					{
-						GetOwner()->GetComponent<Animator>()->Play(L"RightGroundDead", false);
-					}
-				}
-
-				isGround = true;
-				Rigidbody* rb= GetOwner()->GetComponent<Rigidbody>();
-				rb->GravityOff();
+				touch_ground_amount++;
 			}
-			if (col->GetOwner()->GetLayerType() == eLayerType::ShotGun)
+		}
+
+		if (sender->GetName() == L"BodyCollider")
+		{
+			int a = 0;
+			if (col->GetName() == L"CeilingCollider")
 			{
-				isInterctWeapon = true;
-				interact_obj = col->GetOwner();
+				touch_ceiling_amount++;
 			}
 		}
 
-		if (receive_layer == eLayerType::Head && col->GetOwner()->GetLayerType() == eLayerType::Rope)
+		if (sender->GetName() == L"BodyCollider")
 		{
-			isHeadHit_rope = true;
+			if (col->GetName() == L"LeftSideCollider")
+			{
+				touch_left_wall_amount++;
+			}
+			if (col->GetName() == L"RightSideCollider")
+			{
+				touch_right_wall_amount++;
+			}
+			//if (isGround)
+			if (col->GetName() == L"ExitDoorCollider")
+			{
+				isExitDoor = true;
+				hud->ShowButtonUI(L"AButton");
+			}
+			if (col->GetName() == L"GoldBarCollider")
+			{
+				inventory->AddMoney(500);
+				result->AddMoney(500);
+				col->GetOwner()->Death();
+			}
+			if (col->GetName() == L"PileOfGoldBarCollider")
+			{
+				inventory->AddMoney(1500);
+				col->GetOwner()->Death();
+			}
 		}
-		if (receive_layer == eLayerType::Feet)
+
+		
+	}
+
+	void PlayerScript::ChildOnCollisionStay(Collider2D* sender, Collider2D* col)
+	{
+	}
+
+	void PlayerScript::ChildOnCollisionExit(Collider2D* sender, Collider2D* col)
+	{
+		if (sender->GetName() == L"FeetCollider")
 		{
-			isFeetHit_rope = true;
+			if (col->GetName() == L"GroundCollider")
+			{
+				touch_ground_amount--;
+			}
 		}
+		if (sender->GetName() == L"BodyCollider")
+		{
+			if (col->GetName() == L"LeftSideCollider")
+			{
+				touch_left_wall_amount--;
+			}
+		}
+		if (sender->GetName() == L"BodyCollider")
+		{
+			if (col->GetName() == L"RightSideCollider")
+			{
+				touch_right_wall_amount--;
+			}
+		}
+		if (sender->GetName() == L"BodyCollider")
+		{
+			if (col->GetName() == L"ExitDoorCollider")
+			{
+				isExitDoor = false;
+				hud->HideButtonUI(L"AButton");
+			}
+		}
+		if (sender->GetName() == L"BodyCollider")
+		{
+			if (col->GetName() == L"CeilingCollider")
+			{
+				touch_ceiling_amount--;
+			}
+		}
+
+
+	}
 	
-		if (!isInivisible)
-		{
-			if (receive_layer == eLayerType::Head || 
-				receive_layer == eLayerType::Leftbody||
-				receive_layer == eLayerType::RightBody)
-			{
-				if (col->GetOwner()->GetLayerType() == eLayerType::MonsterFeet ||
-					col->GetOwner()->GetLayerType() == eLayerType::MonsterLeftbody ||
-					col->GetOwner()->GetLayerType() == eLayerType::MonsterRightBody)
-				{
-					if (col->GetPosition().x < GetOwner()->GetComponent<Transform>()->GetPosition().x)
-					{
-						curr_life -= 1;
-
-						if (curr_life > 0)
-						{
-							Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
-							rb->KnockbackOn(Vector2(2, 3));
-							mState = Knockback;
-							isInivisible = true;
-							isCtrlAble = false;
-						}
-						else
-						{
-							Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
-							rb->KnockbackOn(Vector2(6, 3));
-							mState = Die;
-							isInivisible = true;
-							isCtrlAble = false;
-						}
-
-					}
-					else
-					{
-						if (curr_life > 0)
-						{
-							Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
-							rb->KnockbackOn(Vector2(-2, 3));
-							mState = Knockback;
-							isCtrlAble = false;
-							isInivisible = true;
-						}
-						else
-						{
-							Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
-							rb->KnockbackOn(Vector2(-6, 3));
-							mState = Die;
-							isInivisible = true;
-							isCtrlAble = false;
-						}
-
-					}
-
-					if (curr_life > 0)
-					{
-						if (direction == LeftAhead)
-						{
-							GetOwner()->GetComponent<Animator>()->Play(L"LeftJump", false);
-						}
-						else
-						{
-							GetOwner()->GetComponent<Animator>()->Play(L"RightJump", false);
-						}
-					}
-					else
-					{
-						if (direction == LeftAhead)
-						{
-							GetOwner()->GetComponent<Animator>()->Play(L"LeftDead", false);
-						
-}
-						else
-						{
-							GetOwner()->GetComponent<Animator>()->Play(L"RightDead", false);
-						}
-					}
-				}
-			}
-		}
 
 
-	}
-
-	void PlayerScript::ReciveColStay(eLayerType receive_layer, Collider2D* col)
-	{
-		if (col->GetOwner()->GetLayerType() == eLayerType::ShotGun)
-		{
-			isInterctWeapon = true;
-			interact_obj = col->GetOwner();
-		}
-
-		if (col->GetOwner()->GetLayerType() == eLayerType::ShotGun)
-		{
-			isInterctWeapon = true;
-			interact_obj = col->GetOwner();
-		}
 
 
-		if (mState != RidingRope && mState != Jump)
-		{
-			if (receive_layer == eLayerType::Head && col->GetOwner()->GetLayerType() == eLayerType::Rope)
-			{
-				if(mState != Jump)
-				if (Input::GetKeyState(eKeyCode::UP) == eKeyState::DOWN || Input::GetKeyState(eKeyCode::UP) == eKeyState::PRESSED)
-				{
-					Vector3 curr_pos = GetOwner()->GetComponent<Transform>()->GetPosition();
-					Vector3 rope_pos = col->GetOwner()->GetComponent<Transform>()->GetPosition();
-					GetOwner()->GetComponent<Transform>()->SetPosition(Vector3(rope_pos.x, curr_pos.y, curr_pos.z));
-					Rigidbody* rb = GetOwner()->GetComponent<Rigidbody>();
-					rb->GravityOff();
-					mState = RidingRope;
-				}
-			}
-		}
-		if (receive_layer == eLayerType::Head && col->GetOwner()->GetLayerType() == eLayerType::Rope)
-		{
-			isHeadHit_rope = true;
-		}
-		if (receive_layer == eLayerType::Feet)
-		{
-			isFeetHit_rope = true;
-		}
-	}
-	void PlayerScript::ReciveColExit(eLayerType receive_layer, Collider2D* col)
-	{
-			if (col->GetOwner()->GetLayerType() == eLayerType::Ground)
-			{
-				isGround = false;
-				if (mState != RidingRope)
-				{
-					Rigidbody* rb= GetOwner()->GetComponent<Rigidbody>();
-					rb->GravityOn();
-				}
-			}
-			if (col->GetOwner()->GetLayerType() == eLayerType::ShotGun)
-			{
-				isInterctWeapon = false;
-				interact_obj = nullptr;
-			}
-
-		if (receive_layer == eLayerType::Head && col->GetOwner()->GetLayerType() == eLayerType::Rope)
-		{
-			isHeadHit_rope = false;
-		}
-		if (receive_layer == eLayerType::Feet)
-		{
-			isFeetHit_rope = false;
-		}
-	}
 }

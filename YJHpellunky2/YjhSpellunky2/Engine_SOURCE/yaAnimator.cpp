@@ -1,6 +1,5 @@
 #include "yaAnimator.h"
 
-
 namespace ya
 {
 	Animator::Animator()
@@ -155,6 +154,7 @@ namespace ya
 
 		return events->mCompleteEvent.mEvent;
 	}
+
 	std::function<void()>& Animator::GetEndEvent(const std::wstring& name)
 	{
 		Events* events = FindEvents(name);

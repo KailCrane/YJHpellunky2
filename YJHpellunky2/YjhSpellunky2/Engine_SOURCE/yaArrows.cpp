@@ -28,7 +28,7 @@ namespace ya
 	{
 		switch (col->GetOwner()->GetLayerType())
 		{
-		case eLayerType::Block:
+		case eLayerType::Tile:
 			//if (col->GetOwner()->GetComponent<Collider2D>()->GetPosition().x)
 
 			break;

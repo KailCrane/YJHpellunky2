@@ -855,23 +855,23 @@ namespace ya
 			collider->SetType(eColliderType::Rect);
 			collider->SetSize(Vector2(0.1f, 0.1f));
 			
-			Animator* animator = player_sheet1->AddComponent<Animator>();
-			std::shared_ptr<Texture> texture = Resources::Load<Texture>(L"Player", L"char_yellow.png");
+			/*Animator* animator = player_sheet1->AddComponent<Animator>();
+			std::shared_ptr<Texture> texture = Resources::Load<Texture>(L"Player", L"char_yellowL.png");
 
 			animator->Create(L"Idle", texture, Vector2(0.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
 			animator->Create(L"Move", texture, Vector2(128.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 8, 0.05f, false);
-			animator->Create(L"Attack", texture, Vector2(0.0f, 512.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 6, 0.05f, false);
+			animator->Create(L"Attack", texture, Vector2(0.0f, 512.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 6, 0.05f, false);*/
 			//animator->Create(L"MoveDown", texture, Vector2(0.0f, 520.0f), Vector2(120.0f, 130.0f), Vector2::Zero, 8, 0.1f);
 			//좌측상단좌표,좌측상단으로부터 잘라낼 범위, 발끝, 잘라낸 크기 , 프레임당 지속
 
 
-			animator->Play(L"Idle", true);
+			//animator->Play(L"Idle", true);
 
-			SpriteRenderer* mr = player_sheet1->AddComponent<SpriteRenderer>();
-			std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");
-			mr->SetMaterial(mateiral);
+			/*SpriteRenderer* mr = player_sheet1->AddComponent<SpriteRenderer>();
+			std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");*/
+			/*mr->SetMaterial(mateiral);
 			std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
-			mr->SetMesh(mesh);
+			mr->SetMesh(mesh);*/
 		}
 
 

@@ -10,6 +10,20 @@ namespace ya::enums
 		End,
 	};
 
+	enum class eTreasureType
+	{
+		eGoldBar,
+		ePileOfGoldBar,
+		eSmallGoldNugget,
+		eLargeGoldNugget,
+		eSmallEmerald,
+		eLargeEmerald,
+		eSmallSapphire,
+		eLargeSapphire,
+		eSmallRuby,
+		eLargeRuby,
+	};
+
 	enum class eLayerType
 	{
 		None = 0,
@@ -17,31 +31,36 @@ namespace ya::enums
 		Grid,
 		Bg,
 		Door,
-		Block,
 		Ground,
 		Ceiling,
+		LeftSide,
+		RightSide,
 		Map,
 		MonsterLeftDetect,
 		MonsterRightDetect,
-		Feet,
-		MonsterFeet,
 		Head,
+		Body,
+		Feet,
+		Tile,
+		MonsterFeet,
 		MonsterHead,
+		MonsterBody,
 		MonsterLeftbody,
-		Leftbody,
 		MonsterRightBody,
-		RightBody,
 		Rope,
 		Whip,
+		Detector,
 		Monster,
+		ExitDoor,
 		Player,
 		Arrow,
 		ShotGun,
 		Bullet,
-		ExitDoor,
+		Item,
+		Particle,
 		UI,
 
-		End = 32,
+		End = 64,
 	};
 
 
@@ -53,13 +72,26 @@ namespace ya::enums
 		Camera,
 		Mesh,
 		Animator,
+		ParticleSystem,
 		Light,
-		MeshRenerer,
 		SpriteRenderer,
-		Collider,
+		MeshRenerer,
 		UI,
+		Collider,
 		Script,
 		End,
+	};
+
+	enum class eMonsterType
+	{
+		eSkeleton,
+		eBat,
+		eSpider,
+		eCaveman,
+		eSnake,
+		eHornlizard,
+		eMerchant,
+		eQuillback
 	};
 
 	enum class eResourceType
@@ -98,6 +130,7 @@ namespace ya::enums
 
 	enum class eItemType
 	{
+		None,
 		AlienCompass,
 		Ankh,
 		ArrowofLight,
@@ -124,6 +157,7 @@ namespace ya::enums
 		FourLeafClover,
 		FreezeRay,
 		GoldKey,
+		Goods,
 		Hedjet,
 		HouYiBow,
 		HoverPack,
@@ -131,6 +165,7 @@ namespace ya::enums
 		Jetpack,
 		Kapala,
 		Key,
+		SkeletonKey,
 		Landmine,
 		LockedChest,
 		Machete,
@@ -167,6 +202,13 @@ namespace ya::enums
 		vladCape,
 		Webgun,
 		WoodenShield
+	};
+
+	enum class eBlockType
+	{
+		Dirt,
+		Wood,
+		Stone
 	};
 
 	enum class eLightType

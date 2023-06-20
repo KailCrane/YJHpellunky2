@@ -23,6 +23,10 @@ namespace ya
 		virtual void OnTriggerStay(Collider2D* collider) {};
 		virtual void OnTriggerExit(Collider2D* collider) {};
 
+		virtual void ChildOnCollisionEnter(Collider2D* Col1, Collider2D* col2) {};
+		virtual void ChildOnCollisionStay(Collider2D* Col1, Collider2D* col2) {};
+		virtual void ChildOnCollisionExit(Collider2D* Col1, Collider2D* col2) {};
+
 	private:
 		//std::vector<Script*> mScripts;
 	};

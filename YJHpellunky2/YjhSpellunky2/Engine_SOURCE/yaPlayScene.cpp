@@ -18,8 +18,6 @@
 #include "yaCollisionManager.h"
 #include "yaWhip.h"
 #include "yaWhipScript.h"
-#include "yaColTransfer.h"
-#include "yaColTransferScript.h"
 #include "yaShotgun.h"
 #include "yaShotGunScript.h"
 #include "yaBullet.h"
@@ -29,7 +27,9 @@
 #include "yaRopeScript.h"
 #include "yaCaveman.h"
 #include "yaMonster.h"
-
+#include "yaSkeleton.h"
+#include "yaStageResult.h"
+#include "yaParticleManager.h"
 
 namespace ya
 {
@@ -41,6 +41,7 @@ namespace ya
 
 	PlayScene::~PlayScene()
 	{
+		delete gamehud;
 	}
 
 	void PlayScene::Initalize()
@@ -52,13 +53,24 @@ namespace ya
 		cameraComp->TurnLayerMask(eLayerType::UI, false);
 		cameraObj->AddComponent<CameraScript>();
 		mainCamera = cameraComp;
-		//메인 카메라 변수가 따로 있다
 
-		//타일맵 추가
-		//미리 저장해둔 레벨파일 로드 필요
-		
-		stage.SetScene(this);
-		stage.LoadStage(0);
+#pragma region  "UI Camera"
+
+
+		GameObject* cameraUIObj = object::Instantiate<GameObject>(eLayerType::Camera, this);
+		Camera* cameraUIComp = cameraUIObj->AddComponent<Camera>();
+		cameraUIComp->SetProjectionType(Camera::eProjectionType::Orthographic);
+		cameraUIComp->DisableLayerMasks();
+		cameraUIComp->TurnLayerMask(eLayerType::UI, true);
+#pragma endregion
+
+		gamehud = new GameHud();
+		gamehud->SetScene(this);
+		gamehud->SetUp();
+
+		GameObject* particle_manager = object::Instantiate<GameObject>(eLayerType::None, this);
+		ParticleManager* pManager = particle_manager->AddComponent<ParticleManager>();
+
 		//Player RECT
 		{
 			my_player = object::Instantiate<Player>(eLayerType::Player, this);
@@ -66,189 +78,85 @@ namespace ya
 			Transform* player_tr = my_player->GetComponent<Transform>();
 			my_player->SetLayerType(eLayerType::Player);
 
-			player_tr->SetPosition(Vector3(1.0f, 1.0f, 1.1f));
-			//tr->SetRotation(Vector3(0.0f, 0.0f, XM_PIDIV2));
+			player_tr->SetPosition(Vector3(3.0f, -2.0f, 1.1f));
 			player_tr->SetScale(Vector3(1.0f, 1.0f, 1.1f));
-			Collider2D* collider = my_player->AddComponent<Collider2D>();
-			collider->SetType(eColliderType::Rect);
-			collider->SetSize(Vector2(0.1f, 0.1f));
-
-			Animator* animator = my_player->AddComponent<Animator>();
-			std::shared_ptr<Texture> texture_L = Resources::Load<Texture>(L"LPlayer", L"char_yellowL.png");
-			std::shared_ptr<Texture> texture_R = Resources::Load<Texture>(L"RPlayer", L"char_yellowR.png");
-
-			animator->Create(L"LeftIdle", texture_L, Vector2(1920.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-			animator->Create(L"RightIdle", texture_R, Vector2(0.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-
-			animator->Create(L"LeftMove", texture_L, Vector2(896.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 8, 0.05f, true);
-			animator->Create(L"RightMove", texture_R, Vector2(128.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 8, 0.05f, false);
-
-			animator->Create(L"LeftAttack", texture_L, Vector2(1280.0f, 512.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 6, 0.05f, true);
-			animator->Create(L"RightAttack", texture_R, Vector2(0.0f, 512.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 6, 0.05f, false);
-
-			animator->Create(L"LeftLookUp", texture_L, Vector2(1536.0f, 1024.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 4, 0.05f, true);
-			animator->Create(L"RightLookUp", texture_R, Vector2(0.0f, 1024.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 4, 0.05f, false);
-
-			animator->Create(L"LeftCrouchEnd", texture_L, Vector2(1664.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, true);
-			animator->Create(L"RightCrouchEnd", texture_R, Vector2(256.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-
-			animator->Create(L"LeftCrouch", texture_L, Vector2(128 * 13, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, true);
-			animator->Create(L"RightCrouch", texture_R, Vector2(0.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, false);
-
-			animator->Create(L"LeftCrawl", texture_L, Vector2(512.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 7, 0.05f, true);
-			animator->Create(L"RightCrawl", texture_R, Vector2(630.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 7, 0.05f, false);
-
-			animator->Create(L"LeftGetUP", texture_L, Vector2(128 * 13, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, false);
-			animator->Create(L"RightGetUP", texture_R, Vector2(256.0f, 128.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, false);
-
-			animator->Create(L"LeftJump", texture_L, Vector2(1408, 1152.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 5, 0.05f, true);
-			animator->Create(L"RightJump", texture_R, Vector2(0.0f, 1152.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 5, 0.05f, false);
-
-			animator->Create(L"LeftFall", texture_L, Vector2(1664.0f, 1280.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, true);
-			animator->Create(L"RightFall", texture_R, Vector2(256.0f, 1280.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, false);
-			
-			animator->Create(L"HangOnRope", texture_R, Vector2(0.0f, 128.0f * 7), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-			animator->Create(L"GoUpRope", texture_R, Vector2(0.0f, 128.0f * 7), Vector2(128.0f, 128.0f), Vector2::Zero, 10, 0.05f, false);
-			animator->Create(L"GoDownRope", texture_R, Vector2(0.0f, 128.0f * 7), Vector2(128.0f, 128.0f), Vector2::Zero, 10, 0.05f, true);
-			
-			animator->Create(L"LeftDead", texture_L, Vector2(128.0f * 14, 128.0f * 2), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, true);
-			animator->Create(L"RightDead", texture_R, Vector2(128.0f * 1, 128.0f * 2), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-			animator->Create(L"LeftGroundDead", texture_L, Vector2(128.0f * 6, 128.0f * 0), Vector2(128.0f, 128.0f), Vector2::Zero, 1 ,0.05f, true);
-			animator->Create(L"RightGroundDead", texture_R, Vector2(128.0f * 9, 128.0f * 0), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-
-
 
 			//animator->Create(L"MoveDown", texture, Vector2(0.0f, 520.0f), Vector2(120.0f, 130.0f), Vector2::Zero, 8, 0.1f);
 			//좌측상단좌표,좌측상단으로부터 잘라낼 범위, 발끝, 잘라낸 크기 , 프레임당 지속
-
-
-			animator->Play(L"RightIdle", true);
-
+			{
 			SpriteRenderer* mr = my_player->AddComponent<SpriteRenderer>();
 			std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");
 			mr->SetMaterial(mateiral);
 			std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
 			mr->SetMesh(mesh);
-
+		}
 			pScript = my_player->AddComponent<PlayerScript>();
 			pScript->SetCamera(cameraObj);
+			pScript->SetHud(gamehud);
+			inventory = my_player->AddComponent<Inventory>();
+			pScript->SetInventory(inventory);
+			pScript->SetStage(stage.GetStage());
+			gamehud->SetPscript(pScript);
+			inventory->SetUp(gamehud);
 
 			Rigidbody* pRb = my_player->AddComponent<Rigidbody>();
-			
 
-			ColTransfer* pFeet_obj = object::Instantiate<ColTransfer>(eLayerType::Feet, this);;
-			pFeet_obj->SetName(L"PlayerFeet");
-			pFeet_obj->SetLayerType(eLayerType::Feet);
-			Transform* pFeet_tr = pFeet_obj->GetComponent<Transform>();
-			pFeet_tr->SetPosition(Vector3(0, 0, 0));
-			pFeet_tr->SetScale(Vector3(0.2f, 1, 1));
-			Collider2D* mFeet_collider = pFeet_obj->AddComponent<Collider2D>();
-			mFeet_collider->SetType(eColliderType::Rect);
-			mFeet_collider->SetSize(Vector2(1.5f, 0.4f));
+			RopeThrowScript* rope_throw = my_player->AddComponent<RopeThrowScript>();
 
-pScript->SetFeet(pFeet_obj);
+			for (int i = 0; i < 100; i++)
+			{
+				Rope* rope_obj = object::Instantiate<Rope>(eLayerType::Rope, this);
+				rope_obj->SetName(L"Rope" + i);
+				Transform* rope_tr = rope_obj->GetComponent<Transform>();
+				rope_obj->SetLayerType(eLayerType::Rope);
 
-ColTransferScript* pFeet_colTransfer = pFeet_obj->AddComponent<ColTransferScript>();
-pFeet_colTransfer->SetReceiver(pScript);
+				rope_tr->SetPosition(Vector3(0.0f, 1.0f, 1.1f));
+				//tr->SetRotation(Vector3(0.0f, 0.0f, XM_PIDIV2));
+				rope_tr->SetScale(Vector3(1.0f, 1.0f, 1.1f));
+				Collider2D* collider = rope_obj->AddComponent<Collider2D>();
+				collider->SetType(eColliderType::Rect);
+				collider->SetSize(Vector2(0.5f, 1.2f));
 
+				Animator* rope_animator = rope_obj->AddComponent<Animator>();
+				std::shared_ptr<Texture> Rope_texture = Resources::Load<Texture>(L"RopeR", L"char_yellowR.png");
 
+				RopeScript* rope_script = rope_obj->AddComponent<RopeScript>();
 
-ColTransfer* pHead_obj = object::Instantiate<ColTransfer>(eLayerType::Head, this);;
-pHead_obj->SetName(L"PlayerHead");
-pHead_obj->SetLayerType(eLayerType::Head);
-Transform* pHead_tr = pHead_obj->GetComponent<Transform>();
-pHead_tr->SetPosition(Vector3(0, 0, 0));
-pHead_tr->SetScale(Vector3(0.2f, 1, 1));
-Collider2D* mHead_collider = pHead_obj->AddComponent<Collider2D>();
-mHead_collider->SetType(eColliderType::Rect);
-mHead_collider->SetSize(Vector2(1.5f, 0.4f));
-
-pScript->SetHead(pHead_obj);
-
-ColTransferScript* pHead_colTransfer = pHead_obj->AddComponent<ColTransferScript>();
-pHead_colTransfer->SetReceiver(pScript);
-
-ColTransfer* pLeft_obj = object::Instantiate<ColTransfer>(eLayerType::Leftbody, this);;
-pLeft_obj->SetName(L"PlayerLeftBody");
-pLeft_obj->SetLayerType(eLayerType::Leftbody);
-Transform* pLeft_tr = pLeft_obj->GetComponent<Transform>();
-pLeft_tr->SetPosition(Vector3(0, 0, 0));
-pLeft_tr->SetScale(Vector3(0.2f, 1, 1));
-Collider2D* mLeft_collider = pLeft_obj->AddComponent<Collider2D>();
-mLeft_collider->SetType(eColliderType::Rect);
-mLeft_collider->SetSize(Vector2(1.5f, 1.2f));
-
-pScript->SetLeftBody(pLeft_obj);
-
-ColTransferScript* pLeft_colTransfer = pLeft_obj->AddComponent<ColTransferScript>();
-pLeft_colTransfer->SetReceiver(pScript);
-
-ColTransfer* pRight_obj = object::Instantiate<ColTransfer>(eLayerType::RightBody, this);;
-pRight_obj->SetName(L"PlayerRightBody");
-pRight_obj->SetLayerType(eLayerType::RightBody);
-Transform* pRight_tr = pRight_obj->GetComponent<Transform>();
-pRight_tr->SetPosition(Vector3(0, 0, 0));
-pRight_tr->SetScale(Vector3(0.2f, 1, 1));
-Collider2D* mRight_collider = pRight_obj->AddComponent<Collider2D>();
-mRight_collider->SetType(eColliderType::Rect);
-mRight_collider->SetSize(Vector2(1.5f, 1.2f));
-
-pScript->SetRightBody(pRight_obj);
-
-ColTransferScript* pRight_colTransfer = pRight_obj->AddComponent<ColTransferScript>();
-pRight_colTransfer->SetReceiver(pScript);
-
-RopeThrowScript* rope_throw = my_player->AddComponent<RopeThrowScript>();
-
-//GameObject* pHead_obj;
-
-for (int i = 0; i < 100; i++)
-{
-	Rope* rope_obj = object::Instantiate<Rope>(eLayerType::Rope, this);
-	rope_obj->SetName(L"Rope" + i);
-	Transform* rope_tr = rope_obj->GetComponent<Transform>();
-	rope_obj->SetLayerType(eLayerType::Rope);
-
-	rope_tr->SetPosition(Vector3(0.0f, 1.0f, 1.1f));
-	//tr->SetRotation(Vector3(0.0f, 0.0f, XM_PIDIV2));
-	rope_tr->SetScale(Vector3(1.0f, 1.0f, 1.1f));
-	Collider2D* collider = rope_obj->AddComponent<Collider2D>();
-	collider->SetType(eColliderType::Rect);
-	collider->SetSize(Vector2(0.5f, 1.2f));
-
-	Animator* rope_animator = rope_obj->AddComponent<Animator>();
-	std::shared_ptr<Texture> Rope_texture = Resources::Load<Texture>(L"RopeR", L"char_yellowR.png");
+				rope_animator->Create(L"RopeTop", Rope_texture, Vector2(128.0f * 12, 128.0f * 9), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+				rope_animator->Create(L"RopeTopUnfold", Rope_texture, Vector2(128.0f * 13, 128.0f * 9), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+				rope_animator->Create(L"RopeRoll", Rope_texture, Vector2(128.0f * 4, 128.0f * 12), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+				rope_animator->Create(L"RopeEnd", Rope_texture, Vector2(128.0f * 5, 128.0f * 12), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+				rope_animator->Create(L"RopeMiddle", Rope_texture, Vector2(128.0f * 0, 128.0f * 12), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
 
 
-	RopeScript* rope_script = rope_obj->AddComponent<RopeScript>();
+				//rope_animator->Play(L"RopeTop", false);
 
-	rope_animator->Create(L"RopeTop", Rope_texture, Vector2(128.0f * 12, 128.0f * 9), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-	rope_animator->Create(L"RopeTopUnfold", Rope_texture, Vector2(128.0f * 13, 128.0f * 9), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-	rope_animator->Create(L"RopeRoll", Rope_texture, Vector2(128.0f * 4, 128.0f * 12), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-	rope_animator->Create(L"RopeEnd", Rope_texture, Vector2(128.0f * 5, 128.0f * 12), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-	rope_animator->Create(L"RopeMiddle", Rope_texture, Vector2(128.0f * 0, 128.0f * 12), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+				rope_animator->Play(L"RopeMiddle", false);
+				//whip_animator->Play(L"WhipIdle", false);
 
+				SpriteRenderer* mr = rope_obj->AddComponent<SpriteRenderer>();
+				std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");
+				mr->SetMaterial(mateiral);
+				std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
+				mr->SetMesh(mesh);
 
-	//rope_animator->Play(L"RopeTop", false);
-
-	rope_animator->Play(L"RopeMiddle", false);
-	//whip_animator->Play(L"WhipIdle", false);
-
-	SpriteRenderer* mr = rope_obj->AddComponent<SpriteRenderer>();
-	std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");
-	mr->SetMaterial(mateiral);
-	std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
-	mr->SetMesh(mesh);
-
-	rope_throw->SetRopeDummy(rope_obj, i);
-	rope_obj->Death();
-};
-
-
+				rope_throw->SetRopeDummy(rope_obj, i);
+				rope_obj->Death();
+			};
 		}
 
 
+		stage.SetScene(this);
+		stage.SetPlayer(my_player);
+		stage.SetParticleManager(pManager);
+		stage.LoadStage(0);
 
+		{
+			GameObject* result_obj = object::Instantiate<GameObject>(eLayerType::UI, this);
+			result_obj->SetName(L"Result");
+			result =  result_obj->AddComponent<StageResult>();
+			pScript->SetResult(result);
+		}
 
 
 		{
@@ -264,26 +172,11 @@ for (int i = 0; i < 100; i++)
 			Collider2D* collider = whip_obj->AddComponent<Collider2D>();
 			collider->SetType(eColliderType::Rect);
 			collider->SetSize(Vector2(1.1f, 1.1f));
+			collider->SetName(L"WhipCollider");
 
-			Animator* whip_animator = whip_obj->AddComponent<Animator>();
-			std::shared_ptr<Texture> whip_texture_L = Resources::Load<Texture>(L"WhipL", L"char_yellowL.png");
-			std::shared_ptr<Texture> whip_texture_R = Resources::Load<Texture>(L"WhipR", L"char_yellowR.png");
-			
-			//13번쨰줄 11번째 부터 6개인데  3 1 2
 			whip = whip_obj->AddComponent<WhipScript>();
 			whip->SetPlayer(my_player);
-
-			whip_animator->Create(L"WhipIdle", whip_texture_R, Vector2(1280.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);whip_animator->Create(L"WhipIdle", whip_texture_R, Vector2(1280.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-			whip_animator->Create(L"RightWhipFirstAnim", whip_texture_R, Vector2(1280.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, false);
-			whip_animator->Create(L"RightWhipSecondAnim", whip_texture_R, Vector2(1664.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-			whip_animator->Create(L"RightWhipThirdAnim", whip_texture_R, Vector2(1792.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 2, 0.05f, false);
-
-			whip_animator->Create(L"LeftWhipFirstAnim", whip_texture_L, Vector2(384, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, true);
-			whip_animator->Create(L"LeftWhipSecondAnim", whip_texture_L, Vector2(256.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, true);
-			whip_animator->Create(L"LeftWhipThirdAnim", whip_texture_L, Vector2(0.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 2, 0.05f, true);
 			
-
-			whip_animator->Play(L"WhipIdle", false);
 
 			SpriteRenderer* mr = whip_obj->AddComponent<SpriteRenderer>();
 			std::shared_ptr<Material> mateiral = Resources::Find<Material>(L"PlayerMaterial");
@@ -296,6 +189,8 @@ for (int i = 0; i < 100; i++)
 		}
 
 
+		/*Skeleton* testSkull = object::Instantiate<Skeleton>(eLayerType::Monster,this);
+		testSkull->SetScene(this);*/
 		{
 			/*Monster* caveman_obj = object::Instantiate<Monster>(eLayerType::Monster, this);
 			caveman_obj->SetLayerType(eLayerType::Monster);
@@ -419,7 +314,6 @@ for (int i = 0; i < 100; i++)
 
 
 
-		{
 			/*Shotgun* shotgun_obj = object::Instantiate<Shotgun>(eLayerType::ShotGun, this);
 			shotgun_obj->SetLayerType(eLayerType::ShotGun);
 			shotgun_obj->SetName(L"Shotgun");
@@ -480,7 +374,6 @@ for (int i = 0; i < 100; i++)
 				shogun_Script->SetBullet(bullet_obj, i);
 				bullet_obj->Death();
 			}*/
-		}
 
 #pragma region BG
 
@@ -538,40 +431,56 @@ for (int i = 0; i < 100; i++)
 		uroboros_mr->SetMaterial(uroboros_mateiral);
 		std::shared_ptr<Mesh> uroboros_mesh = Resources::Find<Mesh>(L"RectMesh");
 		uroboros_mr->SetMesh(uroboros_mesh);*/
+		
 
 #pragma endregion
-		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Ground,false);
-		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::ShotGun,true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::Ground,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Ground,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::ShotGun,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::Ground,true);
+
 		CollisionManager::CollisionLayerCheck(eLayerType::MonsterFeet, eLayerType::Ground,true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::MonsterHead,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Player, eLayerType::MonsterHead,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::Ground, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Head, eLayerType::Ceiling, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Body, eLayerType::Ceiling, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Body, eLayerType::LeftSide, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Body, eLayerType::Ground, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Body, eLayerType::RightSide, true);
+
+		CollisionManager::CollisionLayerCheck(eLayerType::Body, eLayerType::Item, true);
+
+		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::MonsterHead, true);
+
+		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::ExitDoor, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Head, eLayerType::ExitDoor, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Body, eLayerType::ExitDoor, true);
+
+		CollisionManager::CollisionLayerCheck(eLayerType::Detector, eLayerType::Player, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Detector, eLayerType::Feet, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Detector, eLayerType::Head, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Detector, eLayerType::Body, true);
+
 		CollisionManager::CollisionLayerCheck(eLayerType::Whip, eLayerType::Monster,true);
+
+		CollisionManager::CollisionLayerCheck(eLayerType::Whip, eLayerType::MonsterBody,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Whip, eLayerType::MonsterHead,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Whip, eLayerType::MonsterFeet,true);
+
+
 		CollisionManager::CollisionLayerCheck(eLayerType::ShotGun, eLayerType::Ground,true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Rope, eLayerType::Feet,true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Rope, eLayerType::Head,true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Whip, eLayerType::Monster,true);
 		CollisionManager::CollisionLayerCheck(eLayerType::Bullet, eLayerType::Monster,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::Detector, eLayerType::Player,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::MonsterBody, eLayerType::Ground,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::MonsterBody, eLayerType::Player,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::MonsterFeet, eLayerType::Ground, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::MonsterFeet, eLayerType::Player, true);
+		CollisionManager::CollisionLayerCheck(eLayerType::MonsterHead, eLayerType::Ground,true);
+		CollisionManager::CollisionLayerCheck(eLayerType::MonsterHead, eLayerType::Player,true);
 
-		CollisionManager::CollisionLayerCheck(eLayerType::Leftbody, eLayerType::MonsterLeftbody,true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Leftbody, eLayerType::MonsterRightBody,true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Leftbody, eLayerType::MonsterHead,true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Leftbody, eLayerType::MonsterFeet,true);
-		CollisionManager::CollisionLayerCheck(eLayerType::RightBody, eLayerType::MonsterLeftbody, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::RightBody, eLayerType::MonsterRightBody, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::RightBody, eLayerType::MonsterHead, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::RightBody, eLayerType::MonsterFeet, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Head, eLayerType::MonsterLeftbody, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Head, eLayerType::MonsterRightBody, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Head, eLayerType::MonsterHead, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Head, eLayerType::MonsterFeet, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::MonsterLeftbody, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::MonsterRightBody, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::MonsterHead, true);
-		CollisionManager::CollisionLayerCheck(eLayerType::Feet, eLayerType::MonsterFeet, true);
-
-
-
-		Scene::Initalize();
+		//Scene::Initalize();
 	}
 
 	void PlayScene::Update()
@@ -582,6 +491,29 @@ for (int i = 0; i < 100; i++)
 			SceneManager::LoadScene(eSceneType::Tilte);
 		}
 
+		//stage.Update();
+		if (Input::GetKeyDown(eKeyCode::O))
+		{
+			stage.Reset();
+		}
+		/*if (Input::GetKeyDown(eKeyCode::O))
+		{
+			std::vector<GameObject*> gs = SceneManager::GetActiveScene()->GetGameObjects(eLayerType::Tile);
+			for (int i = 0; i < gs.size(); i++)
+			{
+				gs[i]->Death();
+			}
+			std::vector<GameObject*> Ds = SceneManager::GetActiveScene()->GetGameObjects(eLayerType::Ground);
+			for (int i = 0; i < gs.size(); i++)
+			{
+				Ds[i]->Death();
+			}
+
+		}*/
+	
+		//만약에 게임이 진행 중이라면
+
+		gamehud->Update();
 		Scene::Update();
 	}
 

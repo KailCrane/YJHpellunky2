@@ -1,6 +1,6 @@
 #pragma once
 #include "yaEngine.h"
-
+#include <math.h>
 
 
 
@@ -203,7 +203,8 @@ namespace ya::math
     Vector2 operator/ (const Vector2& V1, const Vector2& V2) noexcept;
     Vector2 operator/ (const Vector2& V, float S) noexcept;
     Vector2 operator* (float S, const Vector2& V) noexcept;
-
+    
+    
     //------------------------------------------------------------------------------
     // 3D vector
     struct Vector3 : public XMFLOAT3
@@ -240,6 +241,9 @@ namespace ya::math
         Vector3 operator+ () const noexcept { return *this; }
         Vector3 operator- () const noexcept;
 
+        
+
+
         // Vector operations
         bool InBounds(const Vector3& Bounds) const noexcept;
 
@@ -260,8 +264,11 @@ namespace ya::math
         static float Distance(const Vector3& v1, const Vector3& v2) noexcept;
         static float DistanceSquared(const Vector3& v1, const Vector3& v2) noexcept;
 
+        
         static void Min(const Vector3& v1, const Vector3& v2, Vector3& result) noexcept;
         static Vector3 Min(const Vector3& v1, const Vector3& v2) noexcept;
+
+        
 
         static void Max(const Vector3& v1, const Vector3& v2, Vector3& result) noexcept;
         static Vector3 Max(const Vector3& v1, const Vector3& v2) noexcept;

@@ -1,5 +1,7 @@
 #include "yaWhipScript.h"
 #include "yaAnimator.h"
+#include "yaResources.h"
+
 
 namespace ya
 {
@@ -14,18 +16,13 @@ namespace ya
 	}
 	void WhipScript::Initialize()
 	{
-		Animator* animator = this->GetOwner()->GetComponent<Animator>();
-
-		animator->GetCompleteEvent(L"LeftWhipFirstAnim") = std::bind(&WhipScript::WhipSecond, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
-		animator->GetCompleteEvent(L"RightWhipFirstAnim") = std::bind(&WhipScript::WhipSecond, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
-		animator->GetCompleteEvent(L"LeftWhipSecondAnim") = std::bind(&WhipScript::WhipThird, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
-		animator->GetCompleteEvent(L"RightWhipSecondAnim") = std::bind(&WhipScript::WhipThird, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
-		animator->GetCompleteEvent(L"LeftWhipThirdAnim") = std::bind(&WhipScript::WhipEnd, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
-		animator->GetCompleteEvent(L"RightWhipThirdAnim") = std::bind(&WhipScript::WhipEnd, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
+		animator = GetOwner()->GetComponent<Animator>();
+		SetAnimation();
 	}
 
 	void WhipScript::Update()
 	{
+	
 		if (!this->GetOwner()->IsDead())
 		{
 			Vector3 player_pos = player_obj->GetComponent<Transform>()->GetPosition();
@@ -96,6 +93,34 @@ namespace ya
 		{
 			//collider->GetOwner()->GetComponent<Monster>()->GetBluntDamage();
 		}
+	}
+	void WhipScript::SetAnimation()
+	{
+		animator = GetOwner()->AddComponent<Animator>();
+		std::shared_ptr<Texture> whip_texture_L = Resources::Load<Texture>(L"WhipL", L"char_yellowL.png");
+		std::shared_ptr<Texture> whip_texture_R = Resources::Load<Texture>(L"WhipR", L"char_yellowR.png");
+
+		//13번쨰줄 11번째 부터 6개인데  3 1 2
+		
+
+		animator->Create(L"WhipIdle", whip_texture_R, Vector2(1280.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false); animator->Create(L"WhipIdle", whip_texture_R, Vector2(1280.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+		animator->Create(L"RightWhipFirstAnim", whip_texture_R, Vector2(1280.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, false);
+		animator->Create(L"RightWhipSecondAnim", whip_texture_R, Vector2(1664.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
+		animator->Create(L"RightWhipThirdAnim", whip_texture_R, Vector2(1792.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 2, 0.05f, false);
+
+		animator->Create(L"LeftWhipFirstAnim", whip_texture_L, Vector2(384, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.05f, true);
+		animator->Create(L"LeftWhipSecondAnim", whip_texture_L, Vector2(256.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, true);
+		animator->Create(L"LeftWhipThirdAnim", whip_texture_L, Vector2(0.0f, 1526.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 2, 0.05f, true);
+
+		animator->Play(L"WhipIdle", false);
+
+
+		animator->GetCompleteEvent(L"LeftWhipFirstAnim") = std::bind(&WhipScript::WhipSecond, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
+		animator->GetCompleteEvent(L"RightWhipFirstAnim") = std::bind(&WhipScript::WhipSecond, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
+		animator->GetCompleteEvent(L"LeftWhipSecondAnim") = std::bind(&WhipScript::WhipThird, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
+		animator->GetCompleteEvent(L"RightWhipSecondAnim") = std::bind(&WhipScript::WhipThird, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
+		animator->GetCompleteEvent(L"LeftWhipThirdAnim") = std::bind(&WhipScript::WhipEnd, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
+		animator->GetCompleteEvent(L"RightWhipThirdAnim") = std::bind(&WhipScript::WhipEnd, this); // 후에 손에 든 물건에 따라 샷건 활 채찍 모션을 달리할것
 	}
 	void WhipScript::Attack()
 	{

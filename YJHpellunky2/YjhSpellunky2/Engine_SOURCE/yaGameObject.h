@@ -40,6 +40,8 @@ namespace ya
 				comp->SetOwner(this);
 			}
 
+			comp->Initialize();
+
 			return comp;
 		}
 		void AddComponent(Component* comp);
@@ -55,7 +57,6 @@ namespace ya
 				if (comp != nullptr)
 					return comp;
 			}
-
 			return nullptr;
 		}
 		template <typename T>
@@ -95,7 +96,7 @@ namespace ya
 		void DontDestroy(bool enable) { mbDontDestroy = enable; }
 		eLayerType GetLayerType() { return mType; }
 		void SetLayerType(eLayerType type) { mType = type; }
-
+		
 	protected:
 		std::vector<Component*> mComponents;
 

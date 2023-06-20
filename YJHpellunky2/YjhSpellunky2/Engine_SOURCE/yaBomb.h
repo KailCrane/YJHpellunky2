@@ -3,10 +3,13 @@
 #include "yaAnimator.h"
 #include "yaCollider2D.h"
 #include "yaPlayScene.h"
+#include "yaParticleManager.h"
+#include "yaDetector.h"
+#include "yaBlock.h"
 
 namespace ya
 {
-	class Bomb : public GameObject
+	class Bomb : public Script
 	{
 	public:
 
@@ -22,7 +25,17 @@ namespace ya
 		virtual void OnCollisionStay(Collider2D* col);
 		virtual void OnCollisionExit(Collider2D* col);
 
-		void SetScene(PlayScene* _scene) { pScene = _scene; }
+		void SetParticleManager(ParticleManager* manager) { particle_manager = manager; }
+
+		virtual void ChildOnCollisionEnter(Collider2D* sender, Collider2D* col);
+		virtual void ChildOnCollisionStay(Collider2D* sender, Collider2D* col);
+		virtual void ChildOnCollisionExit(Collider2D* sender, Collider2D* col);
+
+
+
+		void SetAnimation();
+
+		void CountDown();
 
 		void IgniteBomb();
 		void ExplodeBomb();
@@ -31,13 +44,6 @@ namespace ya
 
 		Animator* animator;
 		Collider2D* box_collider;
-		
-		enum Direction
-		{
-			Left,
-			Right
-		};
-		Direction direction;
 
 		int bomb_damage = 10;
 		int fire_damage = 1;
@@ -46,6 +52,10 @@ namespace ya
 		float fuse_timer;
 		float explode_range = 2.0;
 		
+		int count;
+		
+		std::vector<Block*> blocks;
+		
 		enum State
 		{
 			Stanby,
@@ -53,9 +63,8 @@ namespace ya
 			Exlode
 		};
 		State state;
-		const std::wstring& Blink = L"";
-
-		PlayScene* pScene;
+		Scene* curr_scene;
+		ParticleManager* particle_manager;
 	};
 }
 	

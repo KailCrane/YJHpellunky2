@@ -15,8 +15,12 @@ namespace ya
 		virtual void FixedUpdate();
 		virtual void Render();
 
+		void SetLife(int num) { life = num; }
+		int GetLife(int num) { return life; }
+
 
 	private:
+		int life;
 
 	};
 }

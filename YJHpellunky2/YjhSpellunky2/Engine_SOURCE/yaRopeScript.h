@@ -7,7 +7,7 @@
 
 namespace ya
 {
-	class RopeScript :public Script
+	class RopeScript : public Script
 	{
 	public:
 		RopeScript();

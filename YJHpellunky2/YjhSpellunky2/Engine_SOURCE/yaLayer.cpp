@@ -37,13 +37,7 @@ namespace ya
 
 	void Layer::Initalize()
 	{
-		for (GameObject* obj : mGameObjects)
-		{
-			if (obj == nullptr)
-				continue;
-
-			obj->Initialize();
-		}
+		
 	}
 
 	void Layer::Update()

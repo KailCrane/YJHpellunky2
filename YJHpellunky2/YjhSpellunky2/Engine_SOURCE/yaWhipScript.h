@@ -22,12 +22,13 @@ namespace ya
 
 		void SetPlayer(GameObject* obj) { player_obj = obj; }
 
-
+		void SetAnimation();
 		void Attack();
 		void WhipFirst();
 		void WhipSecond();
 		void WhipThird();
 		void WhipEnd();
+		
 		bool CoolDown() { return isCooldown; }
 
 		void SetDirection(int a) {
@@ -55,7 +56,7 @@ namespace ya
 		Vector2 curr_whip_pos;
 		Vector2 whip_pos_array[3];
 		GameObject* player_obj;
-
+		Animator* animator;
 		enum Direction
 		{
 			Left,

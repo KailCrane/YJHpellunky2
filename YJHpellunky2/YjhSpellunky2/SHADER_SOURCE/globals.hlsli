@@ -1,47 +1,6 @@
 #include "Light.hlsli"
-cbuffer Transform : register(b0)
-{
-    row_major matrix world;
-    row_major matrix view;
-    row_major matrix projection;
-}
-
-cbuffer MaterialData : register(b1)
-{
-    int cbiData;
-    float cbfData;
-    float2 cbxy;
-    float3 cbxyz;
-    float4 cbxyzw;
-    matrix cbmat;
-}
-
-cbuffer Grid : register(b2)
-{
-    float4 cameraPosition;
-    float2 cameraScale;
-    float2 resolution;
-}
-
-cbuffer Animation : register(b3)
-{
-    float2 leftTop;
-    float2 spriteSize;
-    float2 offset;
-    float2 atlasSize;
-    
-    uint animationType;
-}
- 
-
-SamplerState pointSampler : register(s0);
-SamplerState linearSampler : register(s1);
-SamplerState anisotropicSampler : register(s2);
-
-StructuredBuffer<LightAttribute> lightAttributes : register(t13);
-
-Texture2D defaultTexture : register(t0);
-//Texture2D defaultTexture2 : register(t1);
-//Texture2D defaultTexture3 : register(t2);
-
-Texture2D atlasTexutre : register(t12);
+#include "Particle.hlsli"
+#include "Resource.hlsli"
+#include "Sampler.hlsli"
+#include "ConstantBuffer.hlsli"
+#include "Blur.hlsli"

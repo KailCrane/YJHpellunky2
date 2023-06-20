@@ -32,7 +32,7 @@ namespace ya
 		};
 
 		Animation();
-		virtual ~Animation();
+		~Animation();
 
 		UINT Update();
 		void FixedUpdate();

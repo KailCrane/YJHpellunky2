@@ -15,8 +15,8 @@ namespace ya
 		virtual void FixedUpdate();
 		virtual void Render();
 
-		void SetItemType(eItemType type) { item_type = type; }
-		eItemType item_type;
+		//void SetItemType(eItemType type) { item_type = type; }
+		
 
 	private:
 

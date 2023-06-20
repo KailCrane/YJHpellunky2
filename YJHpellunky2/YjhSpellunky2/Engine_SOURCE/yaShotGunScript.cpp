@@ -7,6 +7,7 @@ namespace ya
 {
 	
 	ShotGunScript::ShotGunScript()
+		:Script()
 	{
 	}
 	ShotGunScript::~ShotGunScript()

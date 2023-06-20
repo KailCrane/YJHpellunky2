@@ -21,6 +21,20 @@ namespace ya
 	}
 	void Scene::Update()
 	{
+		if (mType == eSceneType::Play)
+		{
+			int a = 0;
+
+			for (Layer& layer : mLayers)
+			{
+				if (layer.GetName() == L"Camera")
+				{
+					int a = 0;
+				}
+
+			}
+		}
+
 		for (Layer& layer : mLayers)
 		{
 			layer.Update();
@@ -35,6 +49,12 @@ namespace ya
 	}
 	void Scene::Render()
 	{
+		//씬이 플레이 씬일때
+		//아니라면 그냥 다 렌더
+		//
+		
+
+
 		for (Layer& layer : mLayers)
 		{
 			layer.Render();

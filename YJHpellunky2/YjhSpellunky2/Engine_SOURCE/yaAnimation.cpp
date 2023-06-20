@@ -73,9 +73,9 @@ namespace ya
 				sprite.leftTop = Vector2((leftTop.x + (size.x * (float)(spriteLegth - (i+1)))) / width
 					, (leftTop.y) / height);
 				sprite.size = Vector2(size.x / width, size.y / height);
+				sprite.atlasSize = Vector2(size.x / width, size.y / height);
 				sprite.offset = offset;
 				sprite.duration = duration;
-				sprite.atlasSize = Vector2(100.0f / width, 100.0f / height);
 
 				mSpriteSheet.push_back(sprite);
 			}
@@ -91,18 +91,16 @@ namespace ya
 				sprite.size = Vector2(size.x / width, size.y / height);
 				sprite.offset = offset;
 				sprite.duration = duration;
-				sprite.atlasSize = Vector2(100.0f / width, 100.0f / height);
+				sprite.atlasSize = Vector2(size.x / width, size.y / height);
 
 				mSpriteSheet.push_back(sprite);
 			}
 		}
-
-
 	}
 	 
 	void Animation::BindShader()
 	{
-		mAtlas->BindShader(eShaderStage::PS, 12);
+		mAtlas->BindShaderResource(eShaderStage::PS, 12);
 
 		ConstantBuffer* cb = renderer::constantBuffers[(UINT)eCBType::Animation];
 
@@ -113,8 +111,8 @@ namespace ya
 		info.size = mSpriteSheet[mIndex].size;
 		info.atlasSize = mSpriteSheet[mIndex].atlasSize;
 
-		cb->Bind(&info);
-		cb->SetPipline(eShaderStage::PS);
+		cb->SetData(&info);
+		cb->Bind(eShaderStage::PS);
 	}
 
 	void Animation::Reset()
@@ -133,8 +131,7 @@ namespace ya
 		renderer::AnimationCB info = {};
 		info.type = (UINT)eAnimationType::None;
 
-		cb->Bind(&info);
-		cb->SetPipline(eShaderStage::PS);
+		cb->SetData(&info);
+		cb->Bind(eShaderStage::PS);
 	}
-
 }

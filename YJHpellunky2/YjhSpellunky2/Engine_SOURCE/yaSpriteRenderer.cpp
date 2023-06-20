@@ -33,8 +33,8 @@ namespace ya
 		}
 		this->GetOwner()->GetComponent<Transform>()->SetConstantBuffer();
 
-		GetMaterial()->Bind();
 		GetMesh()->BindBuffer();
+		GetMaterial()->Bind();
 
 
 		Animator* animator = GetOwner()->GetComponent<Animator>();

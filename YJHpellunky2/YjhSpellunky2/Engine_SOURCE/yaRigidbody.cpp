@@ -46,7 +46,7 @@ namespace ya
 	}
 	void Rigidbody::Gravity()
 	{
-		if (!this->GetOwner()->IsDead())
+		/*if (!this->GetOwner()->IsDead())
 		{
 			acc = max_velocity / 0.3;
 
@@ -58,7 +58,7 @@ namespace ya
 			Vector3 curr_pos = this->GetOwner()->GetComponent<Transform>()->GetPosition();
 			Vector3 fixed_pos = Vector3(curr_pos.x, curr_pos.y -= max_velocity * Time::DeltaTime(), curr_pos.z);
 			this->GetOwner()->GetComponent<Transform>()->SetPosition(fixed_pos);
-		}
+		}*/
 	}
 	void Rigidbody::AddForce(Vector2 direction)
 	{

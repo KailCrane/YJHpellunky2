@@ -3,96 +3,121 @@
 #include "yaResources.h"
 #include "yaTexture.h"
 #include "yaTime.h"
+#include "yaSpriteRenderer.h"
+#include "yaResources.h"
 
 namespace ya
 {
 	Bomb::Bomb()
-		:direction(Left)
 	{
-		this->AddComponent<Rigidbody>();
-	    animator = this->AddComponent<Animator>();
-		std::shared_ptr<Texture> texture_L = Resources::Load<Texture>(L"Bomb", L"itemsL.png");
-
-		animator->Create(L"LeftIdle", texture_L, Vector2(1920.0f, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 0.05f, false);
-
-		box_collider = this->AddComponent<Collider2D>();
-		box_collider->SetType(eColliderType::Rect);
-		box_collider->SetSize(Vector2(1,1));
+		
 	}
 	Bomb::~Bomb()
 	{
 	}
 	void Bomb::Initialize()
 	{
-		GameObject::Initialize();
+		curr_scene = SceneManager::GetPlayScene();
+
+		SpriteRenderer* mr = GetOwner()->AddComponent<SpriteRenderer>();
+		std::shared_ptr<Material> material = Resources::Find<Material>(L"BombMaterial");
+		mr->SetMaterial(material);
+		std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
+		mr->SetMesh(mesh);
+
+		animator = GetOwner()->AddComponent<Animator>();
+		SetAnimation();
 	}
 	void Bomb::Update()
 	{
-		GameObject::Update();
+
 	}
 	void Bomb::FixedUpdate()
 	{
-		GameObject::FixedUpdate();
+
 	}
 	void Bomb::Render()
 	{
-		GameObject::Render();
-	}
-
-
-	void Bomb::OnCollisionEnter(Collider2D* col)
-	{
-		if (col->GetOwner()->GetLayerType() == eLayerType::Ground)
-		{
-			if (GetComponent<Transform>()->GetScale().x 
-				== col->GetOwner()->GetComponent<Transform>()->GetScale().x &&
-				GetComponent<Transform>()->GetScale().y
-				== col->GetOwner()->GetComponent<Transform>()->GetScale().y)
-			{
-				float Ax1 = box_collider->GetPosition().x;
-				float Ax2 = box_collider->GetPosition().x + box_collider->GetSize().x;
-
-				float Ay1 = box_collider->GetPosition().y;
-				float Ay2 = box_collider->GetPosition().x - box_collider->GetSize().y;
-
-				float Bx1 = col->GetPosition().x;
-				float Bx2 = col->GetPosition().x + col->GetSize().x;
-
-				float By1 = col->GetPosition().y;
-				float By2 = col->GetPosition().y - box_collider->GetSize().y;
-			}
-			else
-			{
-
-			}
-		}
 
 	}
-	void Bomb::OnCollisionStay(Collider2D* col)
+	void Bomb::CountDown()
 	{
-	}
-	void Bomb::OnCollisionExit(Collider2D* col)
-	{
-	}
-	void Bomb::IgniteBomb()
-	{
-		fuse_timer += Time::DeltaTime();
-		if (fuse_timer >= fuse_burst_time)
+		count += 1;
+		animator->Play(L"Explode", false);
+
+		if (count >= 3)
 		{
 			ExplodeBomb();
 		}
 	}
+
+	void Bomb::SetAnimation()
+	{
+		std::shared_ptr<Texture> bomb_texture = Resources::Load<Texture>(L"Bomb", L"Item//Bomb.png");
+
+		animator->Create(L"Idle", bomb_texture, Vector2(0.0, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 1, 1.0f, false);
+		animator->Create(L"Ignite", bomb_texture, Vector2(0.0, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 1.0f, false);
+		animator->Create(L"Explode", bomb_texture, Vector2(0.0, 0.0f), Vector2(128.0f, 128.0f), Vector2::Zero, 3, 0.2f, false);
+		animator->GetCompleteEvent(L"Explode") = std::bind(&Bomb::CountDown, this);
+		animator->Play(L"Idle",false);
+	}
+
+	void Bomb::IgniteBomb()
+	{
+
+	}
 	void Bomb::ExplodeBomb()
 	{
-		GameObjects A = pScene->GetGameObjects(eLayerType::Ground);
+		//particle_manager->SpawnExplosive(GetOwner()->GetComponent<Transform>()->GetPosition());
+	}
 
-		for (int i = 0; i < A.size(); i++)
+	void Bomb::OnCollisionEnter(Collider2D* col)
+	{
+
+	}
+	void Bomb::OnCollisionStay(Collider2D* col)
+	{
+
+	}
+	void Bomb::OnCollisionExit(Collider2D* col)
+	{
+	
+	}
+
+	void Bomb::ChildOnCollisionEnter(Collider2D* sender, Collider2D* col)
+	{
+		if (sender->GetName() == L"ExplodeRangeCollider")
 		{
-			//if (A[i]->GetLayerType() == eLayerType::Ground &&)
+			if (col->GetName() == L"PlayerBodyCollider")
+			{
+			}
+			if (col->GetName() == L"MonsterBodyCollider")
 			{
 
 			}
+			if (col->GetName() == L"BlockCollider")
+			{
+				blocks.push_back(col->GetOwner()->GetComponent<Block>());
+			}
 		}
+	}
 
+	void Bomb::ChildOnCollisionStay(Collider2D* sender, Collider2D* col)
+	{
+
+	}
+
+	void Bomb::ChildOnCollisionExit(Collider2D* sender, Collider2D* col)
+	{
+		if (col->GetName() == L"BlockCollider")
+		{
+			for (int i = 0; i < blocks.size(); i++)
+			{
+				if (blocks[i]->GetID() == col->GetOwner()->GetComponent<Block>()->GetID())
+				{
+					blocks.erase(remove(blocks.begin(), blocks.end(), col->GetOwner()->GetComponent<Block>()), blocks.end());
+				}
+			}
+		}
 	}
 }

@@ -8,6 +8,7 @@
 #include "yaConstantBuffer.h"
 #include "yaCamera.h"
 #include "yaLight.h"
+#include "yaStructedBuffer.h"
 
 using namespace ya::math;
 using namespace ya::graphics;
@@ -53,13 +54,41 @@ namespace ya::renderer
 		Vector2 atlasSize;
 
 		UINT type;
+
 	};
 
-
-	CBUFFER(TextureCB, CBSLOT_TEXTURE)
+	//CBSLOT_NUMBEROFLIGHT
+	CBUFFER(LightCB, CBSLOT_NUMBEROFLIGHT)
 	{
-		Vector2 leftTop;
-		Vector2 atlasSize;
+		UINT numberOfLight;
+	};
+
+	//CBUFFER(TextureCB, CBSLOT_TEXTURE)
+	//{
+	//	Vector2 leftTop;
+	//	Vector2 atlasSize;
+	//};
+
+	CBUFFER(ParticleSystemCB, CBSLOT_PARTICLESYSTEM)
+	{
+		Vector4 worldPosition;
+		Vector4 startColor;
+		Vector4 startSize;
+
+		UINT maxParticles;
+		UINT simulationSpace;
+		float radius;
+		float startSpeed;
+
+		float startLifeTime;
+		float deltaTime;
+		float elapsedTime; //누적시간
+		int padding;
+	};
+
+	CBUFFER(NoiseCB, CBSLOT_NOISE)
+	{
+		Vector4 noiseSize;
 	};
 
 	extern Vertex vertexes[4];
@@ -73,10 +102,15 @@ namespace ya::renderer
 	extern std::vector<Camera*> cameras[];
 	extern std::vector<DebugMesh> debugMeshes;
 	extern std::vector<LightAttribute> lights;
+	extern StructedBuffer* lightsBuffer;
 
 	void Initialize();
 	void Render();
 	void Release();
+	void CreateMaterial(const std::wstring& texture_name, const std::wstring& shader_name, eTextureSlot slot, const std::wstring& key_mame);
 	//Renderer
+	void PushLightAttribute(LightAttribute lightAttribute);
+	void BindLights();
+	void BindNoiseTexture();
 }
 
